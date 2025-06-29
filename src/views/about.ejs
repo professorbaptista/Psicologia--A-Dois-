@@ -8,8 +8,28 @@
 </head>
 <body>
     <%- include('partials/header', {title: 'Home'}) %>
-      <h1><%= titulo %></h1>
+    <main class="main-container">
+    
+      <div class="container">
+          <h2><%= titulo %></h2>
 
+          <div class="informacao">
+            <div class="sobre-mim">
+              <p>Psicólogo formado com mestrado em psicologia social, especializado em relações humanas e dinâmicas interpessoais.</p>
+              <h2>Missão</h2>
+              <p>Ajudar pessoas a desenvolver relações conscientes, baseadas em respeito, escuta e autenticidade</p>
+              <h2>Abordagem</h2>
+              <p>Trabalho com base na psicologia humanista e social, integrando conhecimentos cientificos com realidade prática das relações modernas.</p>
+            </div>
+
+            <div class="image">
+              <h1>Minha IMAGEM</h1>
+            </div>
+          </div>
+          
+      </div>
+     
+    </main>
     <%- include('partials/footer', {title: 'Home'}) %>
    
 </body>

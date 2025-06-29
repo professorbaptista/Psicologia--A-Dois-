@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Conversa</title>
+</head>
+<body>
+    <%- include('partials/header', {title: 'Agendar'})  %>
+
+    <div class="main-container">
+        <div class="container">
+            <h2><%= titulo %></h2>
+            <form action="/agendar" method="POST" class="form-control">
+                <label for="name">Nome</label>
+                <input type="text" name="name" placeholder="Seu nome..." required>
+                <textarea name="description" placeholder="Mensagem" cols="45" rows="6" required></textarea>
+                <button type="submit" class="form-control-btn">Agendar</button>
+            </form>
+        </div>
+    </div>
+
+    <%- include('partials/footer', {title: 'Agendar'})  %>
+</body>
+</html>

@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-     <%- include('partials/header', {title: 'Home'}) %>
-      <h1><%= titulo %></h1>
-
-    <%- include('partials/footer', {title: 'Home'}) %>
+     <div class="main-container">
+        <%- include('partials/header', {title: 'Home'}) %>  
+        <h1><%= titulo %></h1> 
+        <%- include('partials/footer', {title: 'Home'}) %>
+     </div>
 </body>
 </html>
