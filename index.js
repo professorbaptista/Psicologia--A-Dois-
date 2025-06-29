@@ -3,7 +3,6 @@
 
 // Importações
 const express = require('express');
-const exphbs = require('express-handlebars');
 const genaralRoutes = require('./src/routes/routes');
 const path = require('path');
 
@@ -16,6 +15,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true}));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src', 'views'))
+app.use(express.static(path.join(__dirname, '../public')));
 
 
 // Instanciando as rotas.
