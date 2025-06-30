@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
 
     const user = { name: 'Jose', profissao: 'Psicólogo',interesses: 'Programação'}
 
-    res.render('homePage', {user, titulo: '"Ajudando pessoas a constituirem e manterem relacionamentos saudáveis, conscientes e duradouros"'})
+    res.render('homePage', {user, titulo: '"Ajudando pessoas a constituírem e manterem relacionamentos saudáveis, conscientes e duradouros"'})
 })
 
 router.get('/about', async (req, res) => {
@@ -23,7 +23,7 @@ router.get('/services', async (req, res) => {
 
 router.get('/blogue', async (req, res) => {
 
-    res.render('blogue', {titulo: 'Página do Blogue'})
+    res.render('blogue', {titulo: 'Recomeçar com Propósito'})
 });
 
 router.get('/depoi', (req, res) => {
@@ -32,7 +32,7 @@ router.get('/depoi', (req, res) => {
 })
 router.get('/contacto', (req, res) => {
 
-    res.render('contactos', {titulo: 'Pagina de contactos'})
+    res.render('contactos', {titulo: 'Entre em Contacto Agora'})
 });
 
 router.get('/agendar', async (req, res) => {

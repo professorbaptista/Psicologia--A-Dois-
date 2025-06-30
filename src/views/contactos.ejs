@@ -7,10 +7,48 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-     <div class="main-container">
-        <%- include('partials/header', {title: 'Home'}) %>  
-        <h1><%= titulo %></h1> 
-        <%- include('partials/footer', {title: 'Home'}) %>
-     </div>
+
+    <%- include('partials/header', {title: 'Home'}) %> 
+     <main class="main-container">
+        <div class="container">
+             <h2><%= titulo %></h2> 
+             <form action="/contactos" method="POST" class="form-control">
+                <label>Nome</label>
+                <input type="text" name="name" placeholder="Seu nome..." requered>
+                <label>E-mail</label>
+                <input type="text" name="email" placeholder="Seu e-mail..."requered>
+                <label>Mensagem</label>
+                  <textarea name="description" placeholder="Deixe uma mensagem" cols="45" rows="6" required></textarea>
+                <button type="submit" class="form-control-btn">Enviar</button>
+             </form>
+                <h2>Contactos das redes sociais</h2>
+                <p style="text-align: center">Siga-me nas minhas redes sociais</p>
+             <div class="contactos">
+                
+                <div class="email email2">
+                    <img src="/images/email (2).png">
+                    <p>baptistapsicologo@yahoo.com</p>
+                </div>
+                <div class="email facebook">
+                    <a href="/www.facebook.com/josenzinga.baptista" target="_blank"><img src="/images/facebook_1.webp"></a>
+                    <p><a href="/">Facebook</a></p>
+                </div>
+                <div class="email telefone">
+                    <img src="/images/telefone (2).png">
+                    <p>+244925049871 | 951795214</p>
+                </div>
+                <div class="email WhatsApp">
+                    <img src="/images/whatsap_2a.webp">
+                    <p>+244918173913</p>
+                </div>
+                <div class="email instagram">
+                    <img src="/images/instagram.jpg" alt="Instagram">
+                    <p><a href="/">Instagram</a></P>
+                </div>
+                <div class="email"></div>
+             </div>
+        </div>
+     </main>
+    <%- include('partials/footer', {title: 'Home'}) %>
 </body>
 </html>

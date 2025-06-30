@@ -7,11 +7,25 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+
+    <%- include('partials/header', {title: 'Home'}) %>
       <div class="main-container">
-          <%- include('partials/header', {title: 'Home'}) %>
-          <h1><%= titulo %></h1>
-          
-              <%- include('partials/footer', {title: 'Home'}) %>
+        
+          <h2 class="card-title"><%= titulo %></h2>
+          <div class="card">
+          <p>
+            Nos últimos tempos estive em silêncio. mas não parado. 
+          </p>
+          <p>Refleti bastante sobre como posso usar o meu conhecimento como psicólogo para gerar valor real na vida das pessoas.</p>
+          <p>Decidi retomar este espaço para partilhar conteúdos sobre <strong>relacionamentos amorosos </strong>, <strong>vínculos humanos</strong> e <strong>psicologia aplicada ao dia a dia</strong>.</p>
+
+          <p>Acredito que todos podemos aprender a construir relações saudáveis, conscientes e afectuosas.</p>
+          <p>Se sentir que estes conteúdos podem ajudar-te ou - ajudar alguém que conheces- acompanha esta jornada.</p>
+          <p><em>Vamos juntos nessa?</em></p>
+          <p>- José Baptista | Psicólogo -</p>
+          <img src="/images/recomecar.jpg" alt="Imagem de Recomeço" class="img">
+        </div>
       </div>
+    <%- include('partials/footer', {title: 'Home'}) %>
 </body>
 </html>
