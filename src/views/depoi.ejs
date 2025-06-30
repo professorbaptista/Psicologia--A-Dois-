@@ -11,7 +11,30 @@
     <%- include('partials/header', {title: 'Home'}) %>
      <div class="main-container">
      
-          <h1><%= titulo %></h1>
+          <div class="container">
+              <h2><%= titulo %></h2>
+           
+                <div class="depoi-card">
+                    <div class="depoimento">
+                        <h4><%= name %></h4>
+                        <p><%= depoimentos %></p>
+                    </div>
+                    <div class="depoimento">
+                        <h4><%= name %></h4>
+                        <p><%= depoimentos %></p>
+                    </div>
+                    <div class="depoimento">
+                        <h4><%= name %></h4>
+                        <p><%= depoimentos %></p>
+                    </div>
+                    <div class="depoimento">
+                        <h4><%= name %></h4>
+                        <p><%= depoimentos %></p>
+                    </div>
+                </div>
+
+          
+          </div>
          
     <%- include('partials/footer', {title: 'Home'}) %>         
      </div>

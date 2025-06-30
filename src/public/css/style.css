@@ -301,112 +301,111 @@ body{
 /* Pagina de contactos */
 .contactos{
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin: 0 auto;
+    justify-content: space-around;
+    align-items: center;
+    /* margin: 0 auto; */
     justify-content: space-between;
     padding: 30px;
     align-items: center;
-    margin-bottom: 70px;
-    background-color: var(--color-light-grey);
-    width: 600px;
+    margin-bottom: 30px;
+    /* background-color: var(--color-light-grey); */
+    /* width: 600px; */
 }
 .email2{
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    margin-bottom: 40%;
     gap: 10px;
+    margin-left: 15%;
+
+
+    img{
+        width: 30px;
+        height: 30px;
+    }
+
+    .email{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 20px;
+        color: var(--color-green-olive);
+    }
+
+    .span{
+        margin-top: 4px;
+    }
+}
+
+.telefone{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    /* gap: 10px; */
     margin-left: 6px;
+
+    img{
+        width: 30px;
+        height: 30px;
+    }
+
+    .span2{
+        margin-bottom: 10px;
+        color: var(--color-green-olive);
+    }
+}
+
+.icon-redes{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 15%;
+    margin-bottom: 40%;
+    gap: 30px;
 
     img{
         width: 30px;
         height: 30px;
         border-radius: 50%;
     }
-    p{
-        margin-top: 28px;
-        color: var(--color-green-olive);
-    }
 }
 
-.facebook{
+.icon-redes::before{
+    content: '';
+    height: 90px;
+    width: 7px;
+    background-color: var(--color-green-olive);
+    top: 100%;
+    left: 0;
+}
+
+/* Página de depoimentos*/
+
+.depoi-card{
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-    img{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
-    p{
-        margin-top: 28px;
-        color: var(--color-green-olive);
-    }
-
-    a{
-        text-decoration: none;
-        color: var(--color-green-olive);
-    }
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 40px;
+    gap: 20px;
 }
 
-.telefone{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+.depoimento{
+    width: 400px;
+    padding: 10px;
+    background-color: var(--color-prata);
+    border-radius: 12px;
+    border: 2px solid var(--color-light-blue);
 
-     img{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
+    h4{
+        color: var(--color-light-black);
     }
+
     p{
-        margin-top: 28px;
         color: var(--color-green-olive);
     }
+
 }
-.WhatsApp{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-     img{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
-    p{
-        margin-top: 28px;
-        color: var(--color-green-olive);
-    }
-}
-
-.instagram{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-     img{
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
-    p{
-        margin-top: 28px;
-        color: var(--color-green-olive);
-    }
-
-    a{
-        text-decoration: none;
-        color: var(--color-green-olive);
-    }
-}
-
 
 /* Responsividade*/
 @media screen and (max-width: 992px) {
@@ -416,10 +415,6 @@ body{
 
   .topo-container{
     background-color: var(--color-cream);
-  }
-
-  .navbar{
-
   }
 
   .rodape{

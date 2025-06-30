@@ -27,8 +27,9 @@ router.get('/blogue', async (req, res) => {
 });
 
 router.get('/depoi', (req, res) => {
+    
 
-    res.render('depoi', {titulo: 'Pagina de Depoimentos'})
+    res.render('depoi', {titulo: 'Depoimentos dos clientes satisfeitos e felizes', name: 'Jose', depoimentos: 'Muito satisfeito com o atendimento do Doutor. Ele salvou o meu casamento que estava a beira do colapso. Recomento...' })
 })
 router.get('/contacto', (req, res) => {
 
