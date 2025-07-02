@@ -13,24 +13,41 @@
      
           <div class="container">
               <h2><%= titulo %></h2>
-           
-                <div class="depoi-card">
-                    <div class="depoimento">
-                        <h4><%= name %></h4>
-                        <p><%= depoimentos %></p>
-                    </div>
-                    <div class="depoimento">
-                        <h4><%= name %></h4>
-                        <p><%= depoimentos %></p>
-                    </div>
-                    <div class="depoimento">
-                        <h4><%= name %></h4>
-                        <p><%= depoimentos %></p>
-                    </div>
-                    <div class="depoimento">
-                        <h4><%= name %></h4>
-                        <p><%= depoimentos %></p>
-                    </div>
+           <% depoimentos.forEach(p => { %>
+            <div class="depoi-card">
+
+              <div class="depoimento">
+              <div class="card-content">
+                <span><%= p.image %></span>
+                <h4><%= p.name %></h4>
+               </diV> 
+                <p><%= p.message %></p>
+              </diV> 
+              
+              <div class="depoimento">
+              <div class="card-content">
+                <span><%= p.image %></span>
+                <h4><%= p.name %></h4>
+               </diV> 
+                <p><%= p.message %></p>
+              </diV> 
+
+            </div>
+
+           <% }) %>
+         
+
+                  <h2>Adicionar novo depoimento</h2>
+                  <form action="/Adicionar" method="POST" class="form-control"> 
+                    <label for="name">Nome</label>
+                    <input type="text" name="name" placeholder="Seu nome...">
+                    <label>Carregar uma foto</label>
+                    <input type="file" id="inputImage" accept="image/*" />
+                    <label for="message">Mensagem</label>
+                    <textarea name="message" id="message" cols="6" rows="10"></textarea>
+                    <button type="submit" class="form-control-btn">Adicionar</button>
+                  </form>
+                    
                 </div>
 
           

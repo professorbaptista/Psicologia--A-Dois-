@@ -3,17 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= titulo %></title>
+    <title><%= services %></title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 
      <%- include('partials/header', {title: 'Services'}) %>
-     <div class="main-container">
-        
-          <h1><%= titulo %></h1>
+     <main class="main-container">
+          <div class="container">
+               <h2><%= titulo %></h2>
+               <div class="grid">
+                    <div class="service-card">
+                         <h3>Psicoterapia Individual</h3>
+                         <p>Atendimento focado em autoconheciemnto, ansiedade, auto-estima e bem-estar.</p>
+                    <a href="/agendar" class="service-card-btn">Agendar Consulta</a>
+               </div>
+               <div class="service-card">
+                    <h3>Psicoterapia de Casal</h3>
+                    <p>Ajudo casais a melhorarem o diálogo, confiannça e reconectar afectivamente.</p>
+                    <a href="/agendar" class="service-card-btn">Agendar Consulta</a>
+               </div>
+               <div class="service-card">
+                    <h3>Consultas Online</h3>
+                    <p>Atendimento a distância, com toda a segurança, ética e privacidade.</p>
+                    <a href="/agendar" class="service-card-btn">Agendar Consulta</a>
+               </div>
+               <div class="service-card">
+                    <h3>Workshops & Palestras</h3>
+                    <p>Formações para grupos, escolas ou empresas sobre relações humanas e saúde mental.</p>
+                    <a href="/agendar" class="service-card-btn">Agendar Consulta</a>
+               </div>
+          </div>
+
+     </div>
      <%- include('partials/footer', {title: 'Services'}) %>   
             
-     </div>
+     </main>
 </body>
 </html>
