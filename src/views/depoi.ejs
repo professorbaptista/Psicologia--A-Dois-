@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= titulo %></title>
     <link rel="stylesheet" href="/css/style.css">
+     <link rel="icon" type="image/x-png" sizes="16x16" href="/images/favicon.ico">
 </head>
 <body>
 
@@ -17,41 +18,39 @@
             <div class="depoi-card">
 
               <div class="depoimento">
-              <div class="card-content">
-                <span><%= p.image %></span>
-                <h4><%= p.name %></h4>
+                <div class="card-content">
+                  <span><%= p.image %></span>
+                  <h4><%= p.name %></h4>
                </diV> 
-                <p><%= p.message %></p>
-              </diV> 
-              
-              <div class="depoimento">
-              <div class="card-content">
-                <span><%= p.image %></span>
-                <h4><%= p.name %></h4>
-               </diV> 
-                <p><%= p.message %></p>
-              </diV> 
+                  <p><%= p.message %></p>
+              </diV>
 
-            </div>
-
-           <% }) %>
-         
-
-                  <h2>Adicionar novo depoimento</h2>
-                  <form action="/Adicionar" method="POST" class="form-control"> 
-                    <label for="name">Nome</label>
-                    <input type="text" name="name" placeholder="Seu nome...">
-                    <label>Carregar uma foto</label>
-                    <input type="file" id="inputImage" accept="image/*" />
-                    <label for="message">Mensagem</label>
-                    <textarea name="message" id="message" cols="6" rows="10"></textarea>
-                    <button type="submit" class="form-control-btn">Adicionar</button>
-                  </form>
-                    
+              <% comments.forEach(comment => { %>
+                <div class="comentario">
+                  <ul>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <li class="img"><img src="<%= comment.foto %>" alt="Foto" width="30" style="border-radius: 50%; margin-right: 10px;"></li>
+                      <li class="title"><%= comment.name %></li>
+                    </div>
+                    <li><%= comment.data %></li>
+                    <li><%= comment.comment %></li>
+                  </ul>
                 </div>
 
-          
-          </div>
+              <% }) %>
+               <form action="/comentarios/<%= comment.id %>" method="POST" class="form-control">
+                  <label>Deixe o seu comentários</label>
+                  <label for="name"></label>
+                  <input type="text" name="name" placeholder="Seu nome...">
+                  <label for="comment"></label>
+                  <textarea name="comment" placeholder="Deixe o seu comentário" cols="45" rows="4"></textarea>
+                  <button style="padding: 3px; border-radius: 8px; border: 2px solid lightgreen; outline: none; color: beige; font-size: 1.2rem; background-color: rgb(105, 89, 68);" type="submit">Enviar</button>
+              </form>
+            </div>
+
+           <% }) %>          
+        </div>
+      </div>
          
     <%- include('partials/footer', {title: 'Home'}) %>         
      </div>

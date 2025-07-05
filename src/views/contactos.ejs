@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= titulo %></title>
     <link rel="stylesheet" href="/css/style.css">
+     <link rel="icon" type="image/x-png" sizes="16x16" href="/images/favicon.ico">
 </head>
 <body>
 
@@ -18,7 +19,7 @@
                 <label>E-mail</label>
                 <input type="text" name="email" placeholder="Seu e-mail..."requered>
                 <label>Mensagem</label>
-                  <textarea name="description" placeholder="Deixe uma mensagem" cols="45" rows="6" required></textarea>
+                  <textarea name="message" placeholder="Deixe uma mensagem" cols="45" rows="6" required></textarea>
                 <button type="submit" class="form-control-btn">Enviar</button>
              </form>
                 <h2>Contactos das redes sociais</h2>
@@ -43,6 +44,7 @@
                 </div>
               
              </div>
+                <p class="deixe-depo">O que achou dos meus serviços? <span><a href="/deixarDepoimento">Deixe aqui o seu depoimento.</a></span></p>
         </div>
      </main>
     <%- include('partials/footer', {title: 'Home'}) %>

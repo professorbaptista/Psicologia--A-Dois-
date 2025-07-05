@@ -15,10 +15,13 @@
     --color-light-black: #333333;
     --color-light-grey:rgb(110, 131, 117);
     --color-light-green:rgba(16, 247, 85, 0.62);
+    --color-light-red:rgba(241, 83, 96, 0.62);
+    --color-azul-claro: #38b6ff;
+    --color-verde-escuro: #b5c99a;
     --font-weight-bold: 800;
     --font-weight-normal: 400;
     --font-weight-small: 200;
-    --font-size-smaller: .5rem;
+    --font-size-smaller: .8rem;
     --font-size-small: 1rem;
     --font-size-small-mini: 1.2rem;
     --font-size-normal: 1.5rem;
@@ -66,12 +69,33 @@ body{
 }
 
 .logo{
-    margin: 20px;
+
+    /* display: flex;
+    padding: 8px;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 50%;
+    border: 2px solid var(--color-green-olive);
+    background-color: var(--color-light-green); */
+
+    img{
+        width: 90px;
+        height: 80px;
+         margin: 20px;
+    }
+   
     a{
         text-decoration: none;
         color: var(--color-light-blue);
         font-size: var(--font-size-normal);
         font-family: var(--font-family-Playfair);
+    }
+
+    p{
+        color: var(--color-bege);
+        span{
+            color: var(--color-green-olive);
+        }
     }
 }
 
@@ -85,8 +109,9 @@ body{
 
 .navbar ul li a{
     text-decoration: none;
-    color: var(--color-green-olive);
+    color: var(--color-light-black);
     font-family: var(--font-family-Montserrat);
+    font-size: var(--font-size-smaller);
 }
 
 /* Rodapé */
@@ -106,10 +131,16 @@ body{
         text-align: center;
         font-size: var(--font-size-small);
        
+       
         a{
             text-decoration: none;
-            color: var(--color-light-blue);
-             margin-top: 50px;
+            color: var(--color-azul-claro);
+            margin-top: 50px;
+        }
+
+        span{
+            color: var(--color-verde-escuro);
+            font-size: var(--font-size-big);
         }
     }
     }
@@ -156,6 +187,42 @@ body{
         font-size: var(--font-size-normal-mini);
         line-height: 30px;
         margin-bottom: 30px;
+    }
+
+    .message{
+        width: 70%;
+        height: 40px;
+        background-color: var(--color-light-green);
+        color: var(--color-light-black);
+        margin: 0 auto;
+        border-radius: 12px;
+        padding: 10px;
+        margin-bottom: 20px;
+        p{
+            text-align: center;
+            font-size: var(--font-size-normal);
+        }
+    }
+
+    .error{
+        width: 60%;
+        height: 40px;
+        background-color: var(--color-light-red);
+        color: var(--color-bege);
+        margin: 0 auto;
+        border-radius: 12px;
+        padding: 10px;
+    }
+
+    .deixe-depo{
+        margin-left: 40px;
+        a{
+            text-decoration: none;
+        }
+
+        a:hover{
+            text-decoration: underline;
+        }
     }
 }
 
@@ -381,17 +448,45 @@ body{
 }
 
 /* Página de depoimentos*/
+.comentario{
+    width: 560px;
+    border-radius: 12px;
+    margin-top: 20px;
+    margin: 0 auto;
+    border: 2px solid var(--color-green-olive);
 
-.depoi-card{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin: 30px;
-    gap: 10px;
+    ul{
+        list-style-type: none;
+    }
+
+    li{
+        color: var(--color-light-black);
+        margin: 10px 10px;
+        margin-left: 10px;
+    }
+
+    .title{
+        margin-left: 10px;
+        font-size: var(--font-size-small);
+    }
+}
+
+.comentario::before{
+    content: '';
+    background-color: var(--color-green-olive);
+    height: 90px;
+    width: 4px;
+    position: absolute;
+    top: 100%;
+    left: 0;
 }
 
 .depoimento{
-    width: 400px;
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    width: 560px;
+    margin-bottom: 20px;
     padding: 10px;
     background-color: var(--color-light-black);
     border-radius: 12px;
@@ -399,7 +494,7 @@ body{
 
     .card-content{
         display: flex;
-        justify: space-between;
+        justify-content: space-between;
         align-items: center;
         gap: 20px;
     }
@@ -412,7 +507,6 @@ body{
     p{
         color: var(--color-bege);
     }
-
 }
 
 
@@ -459,6 +553,49 @@ body{
         background-color: var(--color-light-blue);
         color: var(--color-light-black);
      }
+}
+
+/* Pagina de agendamentos*/
+.agendamento{
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+
+    ul{
+        list-style-type: none;
+        width: 590px;
+        background-color: var(--color-light-black);
+        padding: 10px;
+        border-radius: 12px;
+        margin-left: 40px;
+        margin: 0 auto;
+        margin-bottom: 20px;
+
+    }
+
+    .name{
+        font-size: var(--font-size-normal);
+        text-align: left;
+        margin-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    li{
+        color: var(--color-bege);
+        text-align: left;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        line-height: 1.5rem;
+        
+    }
+
+    .message{
+        margin-top: 8px;
+        margin-bottom: 8px;
+        border-top: 2px solid var(--color-light-blue);
+    }
 }
 
 

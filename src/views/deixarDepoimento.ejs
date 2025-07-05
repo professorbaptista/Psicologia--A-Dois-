@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depoimentos</title>
+    <link rel="stylesheet" href="/css/style.css">
+     <link rel="icon" type="image/x-png" sizes="16x16" href="/images/favicon.ico">
+</head>
+<body>
+   <%- include('partials/header', {title: 'Home'}) %>
+    <main class="main-container">
+        <div class="container">
+            <h2><%= titulo %></h2>
+            <form action="/adicionar" method="POST" class="form-control">
+                <label for="name"></label>
+                <input type="text" name="name" placeholder="Seu nome..." required>
+                <label for="message"></label>
+                <textarea name="message" placeholder="Deixe o seu depoimento..." cols="45" rows="6"></textarea>
+                <button type="submit" class="form-control-btn">Enviar</button>
+            </form>
+        </div>
+    </main>
+   
+    <%- include('partials/footer', {title: 'Home'}) %>         
+   
+</body>
+</html>

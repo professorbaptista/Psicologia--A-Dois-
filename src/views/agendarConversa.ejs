@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agendar Conversa</title>
+     <link rel="icon" type="image/x-png" sizes="16x16" href="/images/favicon.ico">
 </head>
 <body>
     <%- include('partials/header', {title: 'Agendar'})  %>
@@ -12,7 +13,7 @@
     <div class="main-container">
         <div class="container">
             <h2><%= titulo %></h2>
-            <form action="/agendar" method="POST" class="form-control">
+            <form action="/agendarConsulta" method="POST" class="form-control">
                 <label for="name">Nome</label>
                 <input type="text" name="name" placeholder="Seu nome..." required>
 
@@ -22,8 +23,8 @@
                 <label for="hora">Hora</label>
                 <input type="time" name="hora" placeholder="Escolhe uma hora" required/>
 
-                <label for="tipo-consulta">Tipo de consulta</label>
-                <select>
+                <label for="tipo_servicos">Tipo de Serviço</label>
+                <select name="tipo_servicos" >
                     <option value="Psicoterapia Individual">Psicoterapia Individual</option>
                     <option value="Psicoterapia de Casal">Psicoterapia de Casal</option>
 
@@ -31,8 +32,9 @@
 
                     <option value="Workshop">Workshop</option>
                     <option value="Palestra">Palestra</option>
+                    <option value="Consulta Online">Consulta Online</option>
                 </select>
-                <textarea name="description" placeholder="Mensagem" cols="45" rows="6" required></textarea>
+                <textarea name="message" placeholder="Mensagem" cols="45" rows="6" required></textarea>
                 <button type="submit" class="form-control-btn">Agendar</button>
             </form>
         </div>

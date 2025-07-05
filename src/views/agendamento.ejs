@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento</title>
+     <link rel="icon" type="image/x-png" sizes="16x16" href="/images/favicon.ico">
+</head>
+<body>
+    <%- include('partials/header', { title: 'Agendamento'})  %>
+        <main class="main-container">
+            <div class="container">
+                <h2><%= titulo %></h2>
+                <% if(message) { %>
+                    <div class="message">
+                        <p><%= message %></p>
+                    </div>
+               <% } else { %>
+                <div class="error">
+                    <p><%= error %></p>
+                </div>
+
+               <% } %> 
+                
+
+               <% if(agendamentos){ %>
+
+                 <% agendamentos.forEach(a => { %>
+                       <div class="agendamento">
+                        <ul>
+                            <li class="name">Nome: <%= a.name %></li>
+                            <li> Data: <%= a.data %></li>
+                            <li>Hora: <%= a.hora %></li>
+                            <li>Tipo de Serviço: <%= a.tipo_servicos %></li>
+                            <li style="text-align: center; font-size: 1.2rem; color: beige; border-top: 2px solid lightblue;">Mensagem</li>
+                            <li><%= a.message %></li>
+                        </ul>
+                       <% comments.forEach(co => { %>
+                        <ul>
+                            <li><%= co.name %></li>
+                            <li><%= co.comment %></li>
+                        </ul>
+
+                       <% }) %>
+                        
+                       
+                        <% contactos.forEach(c => { %>
+                                <ul>
+                                    <li><%= contato %></li>
+                                    <li><%= c.name %></li>
+                                    <li><%= c.email %></li>
+                                    <li><%= c.message %></li>
+                                </ul>
+                           
+
+                        <% }) %>
+                       </div>
+
+                    <% }) %>
+
+               <% } else { %>
+                <p>Nenhum agendamento no momento.</p>
+
+               <% } %>
+                   
+            </div>
+
+        </main>
+    <%- include('partials/footer', { title: 'Agendamento'})  %>
+</body>
+</html>
