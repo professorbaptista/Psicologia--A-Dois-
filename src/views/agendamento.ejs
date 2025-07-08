@@ -11,6 +11,10 @@
         <main class="main-container">
             <div class="container">
                 <h2><%= titulo %></h2>
+                <div class="voltar">
+                <a href="/agendar" class="form-control-btn">Voltar</a>
+            </div> 
+            
                 <% if(message) { %>
                     <div class="message">
                         <p><%= message %></p>
@@ -34,11 +38,24 @@
                             <li>Tipo de Serviço: <%= a.tipo_servicos %></li>
                             <li style="text-align: center; font-size: 1.2rem; color: beige; border-top: 2px solid lightblue;">Mensagem</li>
                             <li><%= a.message %></li>
+                            
+                            <!-- Botoes editar e deletar -->
+                             <span class="span">
+                                <li>
+                                    <a href="/editar/<%= a.id %>" class="editar">Editar</a>
+                            </li>
+                            <li>
+                                <form action="/deletar/<%= a.id %>" method="get">
+                                    <button class="deletar" type="submit">Deletar</button>
+                                </form>
+                            </li>
+                            </span>
                         </ul>
                        <% comments.forEach(co => { %>
                         <ul>
                             <li><%= co.name %></li>
                             <li><%= co.comment %></li>
+                       
                         </ul>
 
                        <% }) %>
@@ -51,8 +68,8 @@
                                     <li><%= c.email %></li>
                                     <li><%= c.message %></li>
                                 </ul>
-                           
-
+                                
+              
                         <% }) %>
                        </div>
 
@@ -62,7 +79,8 @@
                 <p>Nenhum agendamento no momento.</p>
 
                <% } %>
-                   
+              
+             
             </div>
 
         </main>

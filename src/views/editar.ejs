@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Agendamento</title>
+</head>
+<body>
+    <%- include('partials/header', {title: 'Editar'}) %>
+    <main class="main-container">
+        <div class="container">
+            <h2><%= titulo %></h2>
+
+                <form action="/editar/<%= agendamento.id %>" method="POST" class="form-control">
+                <label for="">Nome</label>
+                <input type="text" name="name" value="<%= agendamento.name %>" placeholder="Edite o seu nome..." required>
+                <label for="data">Data</label>
+                <input type="date" name="data" value="<%= agendamento.data %>" placeholder="Edite a data" required>
+                <label for="hora">Hora</label>
+                <input type="time" name="hora" value="<%= agendamento.hora %>" placeholder="Edite a hora" required>
+                <label for="tipo_servicos">Tipo de Serviço</label>
+                <input type="text" name="tipo_servicos" value="<%= agendamento.tipo_servicos %>">
+                <label for="message">Mensagem</label>
+                <textarea name="message" placeholder="Mensagem" cols="45" rows="6" required><%= agendamento.message %></textarea>
+                <button type="submit" class="form-control-btn">Editar</button>
+            </form>    
+        </div>
+
+    </main>
+    <%- include('partials/footer', {title: 'Editar'}) %>
+</body>
+</html>

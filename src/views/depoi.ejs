@@ -23,6 +23,15 @@
                   <h4><%= p.name %></h4>
                </diV> 
                   <p><%= p.message %></p>
+
+                     <span class="span">
+             
+                    <a href="/editarDepoimento/<%= p.id %>" class="editar">Editar</a>
+                    
+                    <form action="/deletar/<%= p.id %>" method="post">
+                      <button type="submit" class="deletar">Deletar</button>
+                    </form>
+                    </span>
               </diV>
 
               <% comments.forEach(comment => { %>
@@ -31,27 +40,27 @@
                     <div style="display: flex; align-items: center; gap: 8px;">
                       <li class="img"><img src="<%= comment.foto %>" alt="Foto" width="30" style="border-radius: 50%; margin-right: 10px;"></li>
                       <li class="title"><%= comment.name %></li>
+                      <li><%= comment.data %></li>
                     </div>
-                    <li><%= comment.data %></li>
-                    <li><%= comment.comment %></li>
+                  
+                    <li style="text-align: left; margin-left: 30px;"><%= comment.comment %></li>
                   </ul>
                 </div>
 
               <% }) %>
-               <form action="/comentarios/<%= p.id %>" method="POST" class="form-control">
+               <form action="/comentarios" method="POST" class="form-control-comentario">
                   <label>Deixe o seu comentários</label>
                   <label for="name"></label>
-                  <input type="text" name="name" placeholder="Seu nome...">
+                  <input type="text" name="name" placeholder="Seu nome..." required>
                   <label for="comment"></label>
-                  <textarea name="comment" placeholder="Deixe o seu comentário" cols="45" rows="4"></textarea>
+                  <textarea name="comment" placeholder="Deixe o seu comentário" cols="45" rows="4" required></textarea>
                   <button style="padding: 3px; border-radius: 8px; border: 2px solid lightgreen; outline: none; color: beige; font-size: 1.2rem; background-color: rgb(105, 89, 68);" type="submit">Enviar</button>
               </form>
             </div>
-
-           <% }) %>          
+           <% }) %> 
         </div>
       </div>
-         
+        
     <%- include('partials/footer', {title: 'Home'}) %>         
      </div>
 </body>

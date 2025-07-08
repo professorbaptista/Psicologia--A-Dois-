@@ -150,7 +150,6 @@ body{
 /* Página Home */
 /* Container Principal*/
 .main-container{
-    /* max-height: 60vh; */
     padding-block: 90px;
     max-width: 900px;
     margin: 0 auto;
@@ -223,6 +222,44 @@ body{
         a:hover{
             text-decoration: underline;
         }
+    }
+}
+
+/* Geral Botão Voltar*/
+.voltar{
+    position: fixed;
+    left: 89px;
+    margin-top: 0;
+}
+.voltar a{
+    text-decoration: none;
+    padding: 10px;
+
+}
+
+.form-control-comentario{
+    display: flex;
+    flex-direction: column;
+    width: 560px;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    padding: 10px;
+    border: 2px solid var(--color-verde-escuro);
+    
+    input{
+        margin-bottom: 7px;
+        outline: none;
+        padding: 4px;
+        border-radius: 3px;
+    }
+
+    textarea{
+      
+        outline: none;
+        padding: 4px;
+        border-radius: 3px;
     }
 }
 
@@ -596,6 +633,49 @@ body{
         margin-bottom: 8px;
         border-top: 2px solid var(--color-light-blue);
     }
+
+}
+
+/* Botoes editar e deletar*/
+.span{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+.editar{
+        width: 90px;
+        height: 50px;
+        border: 2px solid var(--color-bege);
+        text-decoration: none;
+        color: var(--color-green-olive);
+        padding: 5px 12px;
+        border-radius: 12px;
+        font-size: var(--font-size-normal);
+        margin: 40px 0 10px 30px;
+
+    }
+
+.editar:hover{
+    background-color: var(--color-light-blue);
+    color: var(--color-bege);
+    }
+
+.deletar{
+    width: 100px;
+    height: 40px;
+    border: 2px solid var(--color-bege);
+    background-color: transparent;
+    color: var(--color-green-olive);
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: var(--font-size-normal);
+    margin: 40px;
+}
+
+.deletar:hover{
+    background-color: var(--color-light-blue);
+    color: var(--color-bege);
 }
 
 

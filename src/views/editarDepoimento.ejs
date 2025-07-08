@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar</title>
+</head>
+<body>
+    <%- include('partials/header', { title: 'Editar'}) %>
+    <main class="main-container">
+        <div class="container">
+            <h2>Edite o depoimento</h2>
+            <form action="/editarDepoimento/<%= depoimento.id %>" method="POST" class="form-control">
+                <label for="message">Nome</label>
+                <input type="text" name="name" value="<%= depoimento.name %>" placeholder="Seu nome...">
+                <textarea name="message" cols="45" rows="6" placeholder="Edite o seu depoimento...."><%= depoimento.message %></textarea>
+                <button type="submit" class="form-control-btn">Editar</button>
+            </form>
+        </div>
+    </main>
+    <%- include('partials/footer', { title: 'Editar'}) %>
+</body>
+</html>
