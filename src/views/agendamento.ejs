@@ -12,8 +12,8 @@
             <div class="container">
                 <h2><%= titulo %></h2>
                 <div class="voltar">
-                <a href="/agendar" class="form-control-btn">Voltar</a>
-            </div> 
+                    <a href="/agendar" class="form-control-btn">Voltar</a>
+                </div> 
             
                 <% if(message) { %>
                     <div class="message">
@@ -25,11 +25,43 @@
                 </div>
 
                <% } %> 
-                
+                <% if(agendamentos.length > 0){ %>
 
-               <% if(agendamentos){ %>
+                    <div class="agendamento">
+                        <ul>
+                        <% agendamentos.forEach(ag => { %>
+                       
+                        <li class="name">Nome: <strong><%= ag.name %></strong> </li>
+                        <li>Data: <%= ag.data %> às <%= ag.hora %> </li>
+                        <li>Serviços: <%= ag.tipo_servicos %> </li>
+                        <li style="text-align: center; font-size: 1.2rem; color: beige; border-top: 2px solid lightblue;">Mensagem</li> 
+                        <li><%= ag.message %></li>
+                    
+                          <!-- Botoes editar e deletar -->
+                        <span class="span">
+                        <li>
+                        <a href="/editarAgendamento/<%= ag.id %>" class="editar">Editar</a>
+                        </li>
+                        <li>
+                        <form action="/deletarAgendamento/<%= ag.id %>" method="get">
+                            <button class="deletar" type="submit">Deletar</button>
+                        </form>
+                    </li>
+                    </span>
+                        
+                    <% }) %>
+                    </ul>
+                    </div>
+
+                <% } else { %>
+                    <p>Nenhum agendamento encontrado. </p>
+               <% } %>
+               
+                
+               <!-- <% if(agendamentos.lenght > 0){ %>
 
                  <% agendamentos.forEach(a => { %>
+
                        <div class="agendamento">
                         <ul>
                             <li class="name">Nome: <%= a.name %></li>
@@ -42,10 +74,10 @@
                             <!-- Botoes editar e deletar -->
                              <span class="span">
                                 <li>
-                                    <a href="/editar/<%= a.id %>" class="editar">Editar</a>
+                                    <a href="/editarAgendamento/<%= a.id %>" class="editar">Editar</a>
                             </li>
                             <li>
-                                <form action="/deletar/<%= a.id %>" method="get">
+                                <form action="/deletarAgendamento/<%= a.id %>" method="get">
                                     <button class="deletar" type="submit">Deletar</button>
                                 </form>
                             </li>
@@ -86,4 +118,4 @@
         </main>
     <%- include('partials/footer', { title: 'Agendamento'})  %>
 </body>
-</html>
+</html> -->

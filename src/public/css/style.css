@@ -599,6 +599,7 @@ body{
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
+    margin-bottom: 20px;
 
     ul{
         list-style-type: none;

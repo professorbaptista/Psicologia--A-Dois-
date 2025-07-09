@@ -4,7 +4,13 @@ const express = require('express');
 
 const moment = require('moment');
 
+// Importação de models.
+const Depoimento = require('../models/Depoimento');
+const Agendamento = require('../models/agendamento');
+
+
 const router = express.Router();
+
 
 
 // Memorias de armazenamento
@@ -48,78 +54,56 @@ router.get('/deixarDepoimento', (req, res) => {
 
 router.get('/depoi', async (req, res) => {
 
-    const id = parseInt(req.params.id);
-    const depoimento = depoimentos.find(d => d.id === id);
+    const depoimentos = await Depoimento.findAll();
     
-    res.render('depoi', { depoimento, depoimentos, comments, titulo: 'Depoimentos dos Clientes Satisfeitos e Felizes', id });
+    res.render('depoi', { depoimentos, depoimentos, comments, titulo: 'Depoimentos dos Clientes Satisfeitos e Felizes' });
 });
 
-
+// Rota post para adicionar depoimentos.
 router.post('/adicionar', async (req, res) => {
 
     const { name, message } = req.body;
 
-    const novoDepoimento = {
-        id: Date.now(),
-        name, 
-        message
-    }
-    console.log('Novo depo: ', novoDepoimento)
-    depoimentos.push(novoDepoimento)
+    await Depoimento.create({ name, message });
 
-    // if(name && message){
-    //     depoimentos.push({ name, message })
-    // }
-
-    // console.log(req.body)
-    res.redirect('/depoi')
+    res.redirect('/depoi') 
 });
 
 // Editar depoimentos
 
 router.get('/editarDepoimento/:id', async (req, res) => {
 
-    const id = parseInt(req.params.id);
-    console.log('Edite ID: ', id)
-    console.log('Lista atual de depoimento: ', depoimentos)
-
-    const depoimento = depoimentos.find(d => d.id === id);
-    console.log('Depoimento encontrado: ', depoimento)
-
-    if (!depoimento) return res.send('Depoimento nao encontrado.')
+    const depoimento = await Depoimento.findByPk(req.params.id);
 
     res.render('editarDepoimento', { depoimento })
 });
 
-router.post('/editarDepoimento/:id', (req, res) => {
+router.post('/editarDepoimento/:id', async (req, res) => {
+
 
     const id = parseInt(req.params.id);
-    console.log('ID DO EDITAR DEPOI: ', id)
+    const { name , message } = req.body;
+   
+    const depoimento = await Depoimento.findByPk(id);
 
-    const { name, message } = req.body;
-     console.log('DADOS DO EDITAR DEPOI: ', req.body)
-    
-    const depoimento = depoimentos.find(d => d.id === id);
-    
     if (depoimento) {
-        depoimento.name = name;
-        depoimento.message = message;
+        await depoimento.update({ name, message }
+);
     }
-
-     console.log(' DEPOI: ', depoimento)
-
+    
     res.redirect('/depoi')
 });
 
-router.post('/deletar/:id', (req, res) => {
+router.post('/deletar/:id', async (req, res) => {
 
-    const id = parseInt(req.params.id);
+    const depoimento = await Depoimento.findByPk(req.params.id);
 
-    const depoimentos = depoimentos.filter(d => d.id !== id);
+    if (depoimento) {
+        await depoimento.destroy();
+    }
 
     res.redirect('/depoi')
-})
-
+});
 
 router.get('/contacto', (req, res) => {
 
@@ -138,82 +122,86 @@ router.post('/contactos', async (req, res) => {
     }
     
 });
-
+// Rota para agendar consulta exibe o formulario.
 router.get('/agendar', async (req, res) => {
 
-    // const agendamento = agendamentos.find(a => a.id === id);
+     const agendamentos = await Agendamento.findAll({ order: [['createdAt', 'DESC']] });
+  
+    console.log('Agendados: ', agendamentos) 
+    
 
-    res.render('agendarConversa', { titulo: 'Agende um serviço'})
+    res.render('agendarConversa', { agendamentos, titulo: 'Agende um serviço'}) // Formulario de agendamento
 });
 
+// Agendamento da consulta preencher e enviar o formulario
 router.post('/agendarConsulta', async (req, res) => {
-
+      console.log('BODY:', req.body); 
   try {
-    
+
     const { name, data, hora, tipo_servicos, message } = req.body;
 
-    agendamentos.push({ id: Date.now(), name, data, hora, tipo_servicos, message });
-    console.log('Age: '. agendamentos)
+    await Agendamento.create({ name, data, hora, tipo_servicos, message });
 
     res.redirect('/agendamento');
 
   } catch (error) {
-    res.render('agendar', { agendamentos, error: 'Erro ao agendar consulta...'})
+       console.error('Erro ao salvar agendamento:', error);
+       res.status(500).send('Erro ao salvar agendamento.');
   }
 });
 
+// Rota agendamento Exibe a lista das agendas
 router.get('/agendamento', async (req, res) => {
 
-     const id = req.params.id;  
+      const agendamentos = await Agendamento.findAll({ order: [['createdAt', 'DESC']] });
 
-    const agendamento = agendamentos.find(a => a.id === id);
-
-    res.render('agendamento', { agendamento, agendamentos, contactos, message: 'Agendamento efectuado com sucesso!', titulo: 'Agendamentos', contato: 'Contactos', comments }) 
+    res.render('agendamento', { agendamentos, agendamentos, contactos, message: 'Agendamento efectuado com sucesso!', titulo: 'Lista de agendamentos', contato: 'Contactos', comments }) 
 });
 
 
-router.get('/editar/:id', (req, res) => {
+router.get('/editar/:id', (req, res) => { 
 
     const id = parseInt(req.params.id);
     console.log('ID: ', id)
 
-    const agendamento = agendamentos.find(a => a.id === id);
-
+    const agendamento = Agendamento.findByPk(id);
     console.log('Agendado: ', agendamento)
     res.render('editar', { agendamento, titulo: 'Edite o seu agendamento',  });
 });
 
-router.post('/editar/:id', (req, res) => {
+router.post('/editarAgendamento/:id', async (req, res) => {
 
-    const id = parseInt(req.params.id);
+    
 
     const { name, data, hora, tipo_servicos, message } = req.body;
 
-    console.log('corpo: ', req.body)
+    const agendamento = Agendamento.findByPk(req.params.id);
 
-    const agendamento = agendamentos.find(a => a.id === id);
-
-    console.log('Editado: ', agendamento)
+    
     if (agendamento) {
-        agendamento.name = name;
-        agendamento.data = data;
-        agendamento.hora = hora;
-        agendamento.tipo_servicos = tipo_servicos;
-        agendamento.message = message;
+        await agendamento.update ({  
+        name,
+        data,
+        hora,
+        tipo_servicos,
+        message,
+    })
+       
     }
    
     res.redirect('/agendamento');
 
-    res.render('agendamento', { error: 'Erro ao editar dados...'})
+    res.render('editar', { error: 'Erro ao editar dados...'})
     
 });
 
-router.get('/deletar/:id', async (req, res) => {
+router.get('/deletarAgendamento/:id', async (req, res) => {
 
-    const id = parseInt(req.params.id);
-       console.log('Id: ', req.params.id)
+    const agendamento = await Agendamento.findByPk(req.params.id);
 
-    const agendamentos = agendamentos.filter(a => a.id !== id);
+    if (agendamento) {
+        await agendamento.destroy();
+    }
 
     res.redirect('/agendamento')
 
