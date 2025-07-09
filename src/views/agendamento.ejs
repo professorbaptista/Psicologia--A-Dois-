@@ -11,11 +11,21 @@
         <main class="main-container">
             <div class="container">
                 <h2><%= titulo %></h2>
+
+                <!-- Filtro de agendamentos -->
+               <div class="filter">
+                <form action="/agendamento" method="GET" class="form-contro">
+                    <label>Filtrar</label>
+                  <input type="text" name="name" placeholder="filtrar por nome...">
+                  <input type="text" name="tipo_servicos" placeholder="Filtrar por serviço...">
+                  <button type="submit" class="form-control-bt">Filtrar</button>
+                </form>
+              </div>
                 <div class="voltar">
                     <a href="/agendar" class="form-control-btn">Voltar</a>
                 </div> 
             
-                <% if(message) { %>
+                <!-- <% if(message) { %>
                     <div class="message">
                         <p><%= message %></p>
                     </div>
@@ -23,14 +33,14 @@
                 <div class="error">
                     <p><%= error %></p>
                 </div>
+               <% } %>  -->
 
-               <% } %> 
                 <% if(agendamentos.length > 0){ %>
 
+                    <% agendamentos.forEach(ag => { %>
                     <div class="agendamento">
-                        <ul>
-                        <% agendamentos.forEach(ag => { %>
-                       
+
+              <ul class="ul">
                         <li class="name">Nome: <strong><%= ag.name %></strong> </li>
                         <li>Data: <%= ag.data %> às <%= ag.hora %> </li>
                         <li>Serviços: <%= ag.tipo_servicos %> </li>
@@ -40,7 +50,7 @@
                           <!-- Botoes editar e deletar -->
                         <span class="span">
                         <li>
-                        <a href="/editarAgendamento/<%= ag.id %>" class="editar">Editar</a>
+                        <a href="/editar/<%= ag.id %>" class="editar">Editar</a>
                         </li>
                         <li>
                         <form action="/deletarAgendamento/<%= ag.id %>" method="get">
@@ -48,13 +58,33 @@
                         </form>
                     </li>
                     </span>
-                        
-                    <% }) %>
                     </ul>
+
+                    <!-- Comentarios -->
+                          <% comments.forEach(co => { %>
+                        <ul>
+                            <li><%= co.name %></li>
+                            <li><%= co.comment %></li>
+                       
+                        </ul>
+
+                       <% }) %>
+
+                       <!-- Contactos dos clientes -->
+                        <% contactos.forEach(c => { %>
+                            <ul>
+                                <li><%= contato %></li>
+                                <li><%= c.name %></li>
+                                <li><%= c.email %></li>
+                                <li><%= c.message %></li>
+                            </ul>      
+                        <% }) %>
+
                     </div>
+                <% }) %>
 
                 <% } else { %>
-                    <p>Nenhum agendamento encontrado. </p>
+                    <p style="text-align: center; font-size: 1.4rem; margin-top: 20px;">Nenhum agendamento encontrado. </p>
                <% } %>
                
                 
@@ -99,10 +129,9 @@
                                     <li><%= c.name %></li>
                                     <li><%= c.email %></li>
                                     <li><%= c.message %></li>
-                                </ul>
-                                
-              
+                                </ul>      
                         <% }) %>
+
                        </div>
 
                     <% }) %>

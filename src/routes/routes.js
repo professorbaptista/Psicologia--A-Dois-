@@ -2,16 +2,13 @@
 
 const express = require('express');
 
-const moment = require('moment');
-
 // Importação de models.
 const Depoimento = require('../models/Depoimento');
 const Agendamento = require('../models/agendamento');
-
+const Comentario = require('../models/comentario');
+const Usuario = require('../models/usuarios');
 
 const router = express.Router();
-
-
 
 // Memorias de armazenamento
 let depoimentos = [];
@@ -19,9 +16,26 @@ let comments = [];
 let agendamentos = [];
 let contactos = [];
 
-router.get('/', async (req, res) => {
 
-    const user = { name: 'Jose', profissao: 'Psicólogo',interesses: 'Programação'}
+function loginRequired( req, res, next ){
+
+
+}
+loginRequired();
+
+// Rota de registrar usuario
+router.get('/cadastrar', async (req, res) => {
+
+    res.render('cadastrar', { titulo: 'Cadastre-se'})
+});
+
+// Rota de login.
+router.get('/login', async (req, res) => {
+
+    res.render('login', { titulo: 'Faça o login'})
+});
+
+router.get('/', async (req, res) => {
 
     res.render('homePage', {user, titulo: '"Ajudando pessoas a constituírem e manterem relacionamentos saudáveis, conscientes e duradouros"'})
 })
@@ -54,7 +68,7 @@ router.get('/deixarDepoimento', (req, res) => {
 
 router.get('/depoi', async (req, res) => {
 
-    const depoimentos = await Depoimento.findAll();
+    const depoimentos = await Depoimento.findAll({ include: Comentario, order: [[ 'createdAt', 'DESC']]});
     
     res.render('depoi', { depoimentos, depoimentos, comments, titulo: 'Depoimentos dos Clientes Satisfeitos e Felizes' });
 });
@@ -105,6 +119,25 @@ router.post('/deletar/:id', async (req, res) => {
     res.redirect('/depoi')
 });
 
+// Comentarios dos depoimentos.
+router.post('/comentarios/:depoimentoId', async (req, res) => {
+
+        const { name, comment, fotoUrl } = req.body;
+       
+        const { depoimentoId } = req.params;
+
+        await Comentario.create({
+            name, 
+            comment,
+            fotoUrl,
+            depoimentoId,
+        });
+
+        console.log('Comentario: ', req.body)
+
+        res.redirect('/depoi')
+})
+
 router.get('/contacto', (req, res) => {
 
     res.render('contactos', {titulo: 'Entre em Contacto Agora mesmo, não adie mais o seu problema!'})
@@ -153,30 +186,35 @@ router.post('/agendarConsulta', async (req, res) => {
 // Rota agendamento Exibe a lista das agendas
 router.get('/agendamento', async (req, res) => {
 
-      const agendamentos = await Agendamento.findAll({ order: [['createdAt', 'DESC']] });
+    // Aplicando filtro de agendamentos.
+    const { name, tipo_servicos } = req.query;
+    const where = {};
+    if(name) where.name = name;
+    if(name) where.tipo_servicos = tipo_servicos;
+    console.log('Where: ', where)
 
+    // Listando todos os agendamentos.
+      const agendamentos = await Agendamento.findAll({ where, order: [['createdAt', 'DESC']] });
+ 
     res.render('agendamento', { agendamentos, agendamentos, contactos, message: 'Agendamento efectuado com sucesso!', titulo: 'Lista de agendamentos', contato: 'Contactos', comments }) 
 });
 
 
-router.get('/editar/:id', (req, res) => { 
+router.get('/editar/:id', async (req, res) => {  
 
     const id = parseInt(req.params.id);
-    console.log('ID: ', id)
+    console.log('ID Editar: ', id)
 
-    const agendamento = Agendamento.findByPk(id);
-    console.log('Agendado: ', agendamento)
+    const agendamento = await Agendamento.findByPk(id);
+    console.log('Agendamento a edutar: ', agendamento)
     res.render('editar', { agendamento, titulo: 'Edite o seu agendamento',  });
 });
 
-router.post('/editarAgendamento/:id', async (req, res) => {
-
-    
+router.post('/editar/:id', async (req, res) => {
 
     const { name, data, hora, tipo_servicos, message } = req.body;
 
-    const agendamento = Agendamento.findByPk(req.params.id);
-
+    const agendamento = await Agendamento.findByPk(req.params.id);
     
     if (agendamento) {
         await agendamento.update ({  
@@ -192,7 +230,7 @@ router.post('/editarAgendamento/:id', async (req, res) => {
     res.redirect('/agendamento');
 
     res.render('editar', { error: 'Erro ao editar dados...'})
-    
+     
 });
 
 router.get('/deletarAgendamento/:id', async (req, res) => {
@@ -204,45 +242,7 @@ router.get('/deletarAgendamento/:id', async (req, res) => {
     }
 
     res.redirect('/agendamento')
-
-    // res.render('agendamento', { deletar, error: 'Erro ao deletar...'})
   
 });
-
-
-router.post('/comentarios', async (req, res) => {
-    
-    try {
-        
-        const { name, comment } = req.body;
-       
-        const id = parseInt(req.params.id);
-
-        const depoimento = depoimentos.find(d => d.id === id);
-         
-        console.log('Depoimento: ', depoimento)
-        if (depoimento && name && comment) {
-            depoimentos.push({ id: Date.now(), depoimento, name, comment});
-
-            const data = moment().format('DD/MM/YYYY HH:MM');
-
-            const novoComentario = {
-
-                id: Date.now(),
-                name,
-                comment,
-                data, 
-                foto: '/users/usuario.png'
-            }
-
-            comments.push(novoComentario);
-            console.log(novoComentario)
-            res.redirect('/depoi')
-        }
-    } catch (error) {
-        res.render('erro', {error: 'Erro ao enviar o comentário!'}) 
-        
-    }
-})
 
 module.exports = router;

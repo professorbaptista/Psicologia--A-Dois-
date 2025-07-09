@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/header', { title: 'Cadastrar'}) %>
+    <main class="main-container">
+        <div class="container">
+            <h2><%= titulo %></h2>
+            <form class="form-control">
+                <label for="name"></label>
+                <input type="text" name="name" placeholder="Inserir o nome."
+                requered>
+                <label for="email"></label>
+                <input type="email" name="email" placeholder="Inserir o e-mail..."
+                requered>
+                <label for="password"></label>
+                <input type="password" name="password" placeholder="Inserir a senha"
+                requered>
+                <button type="submit" class="form-control-btn">Cadastrar</button>
+            </form>
+        </div>
+    </main>
+    <%- include('partials/footer', { title: 'Cadastrar'}) %>
+</body>
+</html>

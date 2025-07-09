@@ -601,7 +601,7 @@ body{
     align-items: center;
     margin-bottom: 20px;
 
-    ul{
+    .ul{
         list-style-type: none;
         width: 590px;
         background-color: var(--color-light-black);
@@ -677,6 +677,37 @@ body{
 .deletar:hover{
     background-color: var(--color-light-blue);
     color: var(--color-bege);
+}
+
+/* Filtrar Agendamento*/
+.filter{
+    margin-bottom: 17px;
+    label{
+        font-size: 1.1rem;
+        color: var(--color-light-black);
+    }
+    input{
+        padding: 4px;
+        width: 25%;
+        border-radius: 6px;
+        border-bottom: 2px solid var(--color-azul-claro);
+        outline: none;
+    }
+
+    button{
+        padding: 4px 6px;
+        border-radius: 9px;
+        background-color: transparent;
+        border: 2px solid var(--color-light-black);
+        cursor: pointer;
+        color: var(--color-green-olive);
+        font-size: var(--font-size-small);
+    }
+
+     button:hover{
+        background-color: var(--color-light-black);
+        color: var(--color-bege);
+     }
 }
 
 

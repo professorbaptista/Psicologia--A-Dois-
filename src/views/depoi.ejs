@@ -14,7 +14,9 @@
      
           <div class="container">
               <h2><%= titulo %></h2>
+
            <% depoimentos.forEach(p => { %>
+            
             <div class="depoi-card">
 
               <div class="depoimento">
@@ -34,32 +36,34 @@
                     </form>
                     </span>
               </diV>
-
-              <% comments.forEach(comment => { %>
-                <div class="comentario">
-                  <ul>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                      <li class="img"><img src="<%= comment.foto %>" alt="Foto" width="30" style="border-radius: 50%; margin-right: 10px;"></li>
-                      <li class="title"><%= comment.name %></li>
-                      <li><%= comment.data %></li>
-                    </div>
-                  
-                    <li style="text-align: left; margin-left: 30px;"><%= comment.comment %></li>
-                  </ul>
-                </div>
-
-              <% }) %>
-               <form action="/comentarios" method="POST" class="form-control-comentario">
+               <form action="/comentarios/<%= p.id %>" method="POST" class="form-control-comentario">
                   <label>Deixe o seu comentários</label>
                   <label for="name"></label>
                   <input type="text" name="name" placeholder="Seu nome..." required>
+                  <input type="text" name="fotoUrl" placeholder="URL da foto">
                   <label for="comment"></label>
-                  <textarea name="comment" placeholder="Deixe o seu comentário" cols="45" rows="4" required></textarea>
-                  <button style="padding: 3px; border-radius: 8px; border: 2px solid lightgreen; outline: none; color: beige; font-size: 1.2rem; background-color: rgb(105, 89, 68);" type="submit">Enviar</button>
+                  <textarea name="comment" placeholder="Deixe o seu comentário" cols="45" rows="4" required><%= p.comment %></textarea>
+                  <button style="padding: 3px; border-radius: 8px; border: 2px solid lightgreen; outline: none; color: beige; font-size: 1.2rem; background-color: rgb(105, 89, 68);" type="submit">Comentar</button>
               </form>
             </div>
+
+            <div class="comentario">
+                <ul>
+                  <% depoimentos.forEach(c => { %>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <li class="img"><img src="<%= p.fotoUrl || '/users/usuarios' %>" alt="Foto" width="30" style="border-radius: 50%; margin-right: 10px;"></li>
+                      <li class="title"><%= p.name %></li>
+                      <li class="title"><%= p.createdAt.toLocaleString() %></li>
+                      <li><%= p.data %></li>
+                    </div>
+                  
+                    <li style="text-align: left; margin-left: 30px;"><%= p.comment %></li>
+                </ul>
+                  <% }) %>
+                </div>
            <% }) %> 
-        </div>
+
+           </div>
       </div>
         
     <%- include('partials/footer', {title: 'Home'}) %>         

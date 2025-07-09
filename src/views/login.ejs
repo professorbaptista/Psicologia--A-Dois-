@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%- include('partials/header', { title: 'Login'}) %>
+    <main class="main-container">
+        <div class="container">
+            <h2><%= titulo %></h2>
+            <from class="form-control">
+                <label for="name">Nome:</label>
+                <input type="text" name="name" placeholder="Introduz a sua senha..." required>
+                <label for="email">E-mail</label>
+                <input type="email" name="email" placeholder="Introduz o e-mail..." required>
+                <button type="submit" class="form-control-btn">Entrar</button>
+            </from>
+        </div>
+    </main>
+    <%- include('partials/footer', { title: 'Login'}) %>
+</body>
+</html>

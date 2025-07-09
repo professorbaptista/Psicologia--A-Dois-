@@ -8,9 +8,6 @@ const path = require('path');
 // Importação do sequelize.
 const sequelize = require('./src/config/database');
 
-// const Depoimento = require('./src/models/depoimento');
-// const Agendamento = require('./src/models/agendamento');
-
 // Instânciando o express.
 const app = express();
 const Port = 3000; 
@@ -28,7 +25,7 @@ app.use('/', genaralRoutes)
 
 // criando a tabela de depoimentos
 // sequelize.sync({ force: true });
-sequelize.sync();
+sequelize.sync();  
 
 app.listen(Port, () => {
     console.log(`Site do projecto Psicologico rodando na porta ${Port}.`)
