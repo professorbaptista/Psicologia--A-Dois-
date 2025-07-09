@@ -27,7 +27,8 @@ app.use(express.static(path.join(__dirname, 'src', 'public')));
 app.use('/', genaralRoutes)
 
 // criando a tabela de depoimentos
-sequelize.sync({ force: true });
+// sequelize.sync({ force: true });
+sequelize.sync();
 
 app.listen(Port, () => {
     console.log(`Site do projecto Psicologico rodando na porta ${Port}.`)
