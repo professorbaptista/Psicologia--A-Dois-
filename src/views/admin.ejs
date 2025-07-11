@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+     <link rel="stylesheet" href="/css/style.css">
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <%- include('partials/header', { title: 'Login'}) %>
+    <main class="main-container">
+        <div class="container">
+            <h2><%= titulo %></h2>
+            <div class="dashboard-cards">
+                <div class="cards">
+                    <h3><%= totalUsuarios %></h3>
+                    <p>Usuários</p>
+                </div>
+                <div class="cards">
+                    <h3><%= totalAgendamentos %></h3>
+                    <p>Agendamentos</p>
+                </div>
+                <div class="cards">
+                    <h3><%= totalDepoimentos %></h3>
+                    <p>Depoimentos</p>
+                </div>
+                <div class="cards">
+                    <h3><%= totalComentarios %></h3>
+                    <p>comentarios</p>
+                </div>
+            </div>
+            <div class="ultimo-depoi">
+                <div class="ulti-depoi-cards">
+                    
+                </div>
+            </div>
+            <h3>Últimos Depoimentos</h3>
+            <div class="ulti-depoimento">
+            <ul>
+                <% ultimosDepoimentos.forEach(dep => { %>
+                <div class="ulti-depoi">
+                <li><strong><%=dep.name %></strong></li>
+                <li><%= dep.message %></li>
+                </div>
+
+                <% }) %>
+            </ul>
+            </div>
+            <h3>Últimos Agendamentos</h3>
+            <div class="ulti-agenda">
+            <ul>
+                <%  ultimosAgendamentos.forEach(ag => { %>
+
+                    <div class="ulti-ag-cards">
+                        <li><strong><%= ag.name %></strong> - <%= ag.data %> às <%= ag.hora %>  <%= ag.tipo_sevicos %></li>
+                        <a href="/usuarios" class="btn">Gerenciar Usuários</a>
+                        <a href="/depoi" class="btn">Ver Depoimentos</a>
+                        <a href="/agendamento" class="btn">Ver Agendamentos</a>
+                    </div>
+                <% }) %>
+            </ul>
+            </div>
+
+            <!-- Estatisticas do site -->
+             h
+            
+        </div>
+    </main>
+    <%- include('partials/footer', { title: 'Login'}) %>
+</body>
+</html>

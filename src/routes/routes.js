@@ -1,12 +1,16 @@
 
 
 const express = require('express');
+const bcrypt = require('bcrypt');
+// const { Usuario, Agendamento, Depoimento, Comentario } = require('../models');
 
 // Importação de models.
 const Depoimento = require('../models/Depoimento');
 const Agendamento = require('../models/agendamento');
 const Comentario = require('../models/comentario');
 const Usuario = require('../models/usuarios');
+
+
 
 const router = express.Router();
 
@@ -16,28 +20,174 @@ let comments = [];
 let agendamentos = [];
 let contactos = [];
 
-
-function loginRequired( req, res, next ){
-
-
+// Function meadleware.
+function isAuthenticated( req, res, next ){
+    if (req.session.usuario) {
+        return next();
+    } else {
+        res.redirect('/login')
+    }
 }
-loginRequired();
+
+// Middleware de administrador.
+function isAdmin (req, res, next){
+    if (req.session.usuario && req.session.isAdmin) {
+        return next();
+    }
+
+    res.redirect('/login')
+}
+
+// Rota do adminstrador
+router.get('/admin', async (req, res ) => {
+
+    // Contagem de total de usuarios, agendamentos, depoimentos e comentarios.
+    const totalUsuarios = await Usuario.count();
+    const totalAgendamentos = await Agendamento.count();
+    const totalDepoimentos = await Depoimento.count();
+    const totalComentarios = await Comentario.count();
+
+    // Contando os últimos depoimentos e comentarios.
+    const ultimosDepoimentos = await Depoimento.findAll({
+        limit: 5,
+        order: [[ 'createdAt', 'DESC']]
+    });
+
+    const ultimosAgendamentos = await Agendamento.findAll({
+        limit: 5,
+        order: [[ 'createdAt', 'DESC']]
+    })
+
+    res.render('admin', { 
+        usuario: req.session.usuario, 
+        totalUsuarios,
+        totalAgendamentos,
+        totalDepoimentos,
+        totalComentarios,
+        ultimosAgendamentos,
+        ultimosDepoimentos,
+        titulo: 'Painel de Administração' 
+
+    })
+}) 
 
 // Rota de registrar usuario
 router.get('/cadastrar', async (req, res) => {
 
-    res.render('cadastrar', { titulo: 'Cadastre-se'})
+   const id = req.params.id;
+    const usuarios = Usuario.findByPk(id)
+
+    res.render('cadastrar', { usuarios, titulo: 'Cadastre-se'})
 });
+
+// Rota de usuarios cadstrados
+router.get('/usuarios', isAuthenticated, async ( req, res ) => {
+
+    const usuarios = await Usuario.findAll();
+
+    res.render('usuarios', { usuarios, titulo: 'Usuários cadastrados'})
+}) 
+
+// Rota post para cadastrar usuario.
+router.post('/cadastrarUsuario', async ( req, res ) => {
+    
+    const { name, email, password } = req.body;
+    const isAdmin = req.query;
+    const hash = await bcrypt.hash(password, 10); // criptografa a senha.
+
+    await Usuario.create({ name, email, password: hash, isAdmin })
+    
+    res.redirect('/login')
+});
+
+router.get('/editarUsuario/:id', isAuthenticated, async (req, res ) => {
+
+    const id = parseInt(req.params.id);
+    const usuario = await Usuario.findByPk(id)
+
+    res.render('editarUsuario', { usuario, titulo: 'Editar Usuário'})
+});
+
+router.post('/editar/:id', isAuthenticated, async (req, res ) => {
+    const id = parseInt(req.params.id);
+    console.log('ID Editar: ', id)
+    const { name, email } = req.body;
+   
+    const usuario = await Usuario.findByPk(id);
+
+    if (usuario) {
+        usuario.name = name;
+        usuario.email = email;
+        await usuario.save();
+    }
+
+    res.redirect('/usuarios')
+}); 
+
+router.post('/deletar/:id', isAuthenticated, async (req, res ) => {
+
+    const id = parseInt(req.params.id);
+    await Usuario.destroy({ where: {id}})
+
+    res.redirect('/usuarios')
+})
 
 // Rota de login.
 router.get('/login', async (req, res) => {
 
-    res.render('login', { titulo: 'Faça o login'})
+    res.render('login', { titulo: 'Faça o login para continuar'})
 });
 
+// Rota post de login.
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const usuario = await Usuario.findOne({ where: { email }});
+    console.log('Email recebido: ', email);
+
+    if (!usuario) {
+      req.flash('error_msg', 'Usuário não encontrado...');
+      return res.redirect('/login'); // <-- importante
+    }
+
+    const senhaValida = await bcrypt.compare(password, usuario.password);
+    console.log('Senha válida: ', senhaValida);
+
+    if (!senhaValida) {
+      req.flash('error_msg', 'Senha inválida...');
+      return res.redirect('/login'); // <-- importante
+    }
+
+    // Usuário autenticado com sucesso
+    req.session.usuario = {
+      id: usuario.id,
+      name: usuario.name,
+      isAdmin: usuario.isAdmin 
+    };
+
+    req.flash('success_msg', 'Login realizado com sucesso!');
+    return res.redirect('/admin');
+    
+  } catch (error) {
+    console.error('Erro ao fazer login:', error);
+    req.flash('error_msg', 'Erro interno no servidor');
+    return res.redirect('/login');
+  }
+});
+
+// Logout de sessão
+router.get('/logout', async (req, res) => {
+    req.session.destroy();
+    res.redirect('/login')
+});
+
+
+
+// Rota de Home.
 router.get('/', async (req, res) => {
 
-    res.render('homePage', {user, titulo: '"Ajudando pessoas a constituírem e manterem relacionamentos saudáveis, conscientes e duradouros"'})
+    res.render('homePage', { titulo: '"Ajudando pessoas a constituírem e manterem relacionamentos saudáveis, conscientes e duradouros"'})
 })
 
 router.get('/about', async (req, res) => {
@@ -85,14 +235,14 @@ router.post('/adicionar', async (req, res) => {
 
 // Editar depoimentos
 
-router.get('/editarDepoimento/:id', async (req, res) => {
+router.get('/editarDepoimento/:id', isAuthenticated, async (req, res) => {
 
     const depoimento = await Depoimento.findByPk(req.params.id);
 
     res.render('editarDepoimento', { depoimento })
 });
 
-router.post('/editarDepoimento/:id', async (req, res) => {
+router.post('/editarDepoimento/:id', isAuthenticated, async (req, res) => {
 
 
     const id = parseInt(req.params.id);
@@ -100,22 +250,30 @@ router.post('/editarDepoimento/:id', async (req, res) => {
    
     const depoimento = await Depoimento.findByPk(id);
 
+    if (!depoimento) {
+        req.flash('error_msg', 'Erro ao editar depoimento')
+    }
     if (depoimento) {
         await depoimento.update({ name, message }
 );
     }
     
+    req.flash('success_msg', 'Depoimento actualizado com sucesso!')
     res.redirect('/depoi')
 });
 
-router.post('/deletar/:id', async (req, res) => {
+router.post('/deletar/:id',  async (req, res) => {
 
     const depoimento = await Depoimento.findByPk(req.params.id);
 
+    if (!depoimento) {
+        req.flash('error_msg', 'Não foi possivel deletar o depoimento')
+    }
     if (depoimento) {
         await depoimento.destroy();
     }
 
+    req.flash('success_msg', 'Depoimento apagado com sucess!')
     res.redirect('/depoi')
 });
 
@@ -156,7 +314,7 @@ router.post('/contactos', async (req, res) => {
     
 });
 // Rota para agendar consulta exibe o formulario.
-router.get('/agendar', async (req, res) => {
+router.get('/agendar',  async (req, res) => {
 
      const agendamentos = await Agendamento.findAll({ order: [['createdAt', 'DESC']] });
   
@@ -168,13 +326,15 @@ router.get('/agendar', async (req, res) => {
 
 // Agendamento da consulta preencher e enviar o formulario
 router.post('/agendarConsulta', async (req, res) => {
-      console.log('BODY:', req.body); 
+
+      //console.log('BODY:', req.body); 
   try {
 
     const { name, data, hora, tipo_servicos, message } = req.body;
 
     await Agendamento.create({ name, data, hora, tipo_servicos, message });
-
+   
+    req.flash('success_msg', 'Serviço agendado com sucesso!')
     res.redirect('/agendamento');
 
   } catch (error) {
@@ -210,11 +370,14 @@ router.get('/editar/:id', async (req, res) => {
     res.render('editar', { agendamento, titulo: 'Edite o seu agendamento',  });
 });
 
-router.post('/editar/:id', async (req, res) => {
+router.post('/editar/:id', isAuthenticated, async (req, res) => {
 
     const { name, data, hora, tipo_servicos, message } = req.body;
 
     const agendamento = await Agendamento.findByPk(req.params.id);
+    if (!agendamento) {
+        req.flash('error_msg', 'Não foi possível concretizar o agendamento!')
+    }
     
     if (agendamento) {
         await agendamento.update ({  
@@ -227,13 +390,12 @@ router.post('/editar/:id', async (req, res) => {
        
     }
    
+    req.flash('success_msg', 'Agendamento efectuado com sucesso!')
     res.redirect('/agendamento');
-
-    res.render('editar', { error: 'Erro ao editar dados...'})
      
 });
 
-router.get('/deletarAgendamento/:id', async (req, res) => {
+router.get('/deletarAgendamento/:id', isAuthenticated, async (req, res) => {
 
     const agendamento = await Agendamento.findByPk(req.params.id);
 
@@ -241,6 +403,7 @@ router.get('/deletarAgendamento/:id', async (req, res) => {
         await agendamento.destroy();
     }
 
+    req.flas('success_msg', 'Agendamento apagado com sucesso!')
     res.redirect('/agendamento')
   
 });

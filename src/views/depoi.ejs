@@ -15,6 +15,16 @@
           <div class="container">
               <h2><%= titulo %></h2>
 
+              <% if(success_msg) { %>
+                <div class="msg">
+                  <p class="success"><%= success_msg %></p>
+                </div>
+              <% } else if(error_msg) { %>
+                <div class="msg">
+                  <p class="success"><%= error_msg %></p>
+                </div><br>
+              <% } %>
+
            <% depoimentos.forEach(p => { %>
             
             <div class="depoi-card">

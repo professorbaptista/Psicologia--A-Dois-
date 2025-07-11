@@ -11,14 +11,27 @@
     <%- include('partials/header', { title: 'Login'}) %>
     <main class="main-container">
         <div class="container">
+
             <h2><%= titulo %></h2>
-            <from class="form-control">
-                <label for="name">Nome:</label>
-                <input type="text" name="name" placeholder="Introduz a sua senha..." required>
+
+            <% if(error_msg) { %>
+                <div class="msg">
+                    <p class="success"><%= error_msg %></p>
+                </div>
+            <% } else if(success_msg) { %>
+                <div class="msg">
+                    <p class="error"><%= success_msg %></p>
+                </div>
+            <% } %>
+
+            <form action="/login" method="POST" class="form-control">
+
                 <label for="email">E-mail</label>
-                <input type="email" name="email" placeholder="Introduz o e-mail..." required>
+                <input type="email" name="email" placeholder="Seu email..." required>
+                <label for="password">Senha</label>
+                <input type="password" name="password" placeholder="Sua senha..." required>
                 <button type="submit" class="form-control-btn">Entrar</button>
-            </from>
+            </form>
         </div>
     </main>
     <%- include('partials/footer', { title: 'Login'}) %>

@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <%-  include('partials/header', { title: 'Usuarios'})  %>
+    <main class="main-container">
+        <div class="container">
+            <h2><%= titulo %></h2>
+        
+                <% usuarios.forEach(user => { %>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>NOme</th>
+                                <th>E-mail</th>
+                                <th>Senha</th>    
+                                <th>Acções</th>    
+                                <th>Apagar</th>    
+                            </tr>
+                        </thead>
+                        <tbody>
+                             <tr>
+                                <td><%= user.name %></td>
+                                <td><%= user.email %></td>
+                                <td><%= user.password %></td>
+                                <td> <a href="/editarUsuario/<%= user.id %>">Editar</a></td>
+                                <td>
+                                    <form action="/deletar/<%= user.id %>" method="post">
+                                        <button type="submit">Apagar</button>
+
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                       
+                    </table>
+
+                <% })  %>
+
+           
+        </div>
+    </main>
+    <%-  include('partials/footer', { title: 'Usuarios'})  %>
+</body>
+</html>

@@ -11,7 +11,15 @@
         <main class="main-container">
             <div class="container">
                 <h2><%= titulo %></h2>
-
+                <% if(success_msg) { %>
+                    <div class="msg">
+                        <p class="success"><%= success_msg %></p>
+                    </div>
+                <% } else if(error_msg){ %>
+                    <div class="msg">
+                        <p class="error"><%= error_msg %></p>
+                    </div>
+                <% } %>
                 <!-- Filtro de agendamentos -->
                <div class="filter">
                 <form action="/agendamento" method="GET" class="form-contro">

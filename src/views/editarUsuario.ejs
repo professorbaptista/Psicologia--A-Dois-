@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,17 +12,17 @@
     <main class="main-container">
         <div class="container"> 
             <h2><%= titulo %></h2>
-            <form action="/cadastrarUsuario" method="POST" class="form-control">
+            <form action="/editar/<%= usuario.id %>" method="POST" class="form-control">
                 <label for="name">Nome</label>
-                <input type="text" name="name" placeholder="Digite o seu nome..."
+                <input type="text" name="name" value="<%= usuario.name %>" placeholder="Digite o seu nome..."
                 requered>
                 <label for="email">E-mail</label>
-                <input type="email" name="email" placeholder="Digite o e-mail..."
+                <input type="email" name="email" value="<%= usuario.email %>" placeholder="Digite o e-mail..."
                 requered>
-                <label for="password">Senha</label>
+                <!-- <label for="password">Senha</label>
                 <input type="password" name="password" placeholder="Digite a sua senha..."
-                requered>
-                <button type="submit" class="form-control-btn">Cadastrar</button>
+                requered> -->
+                <button type="submit" class="form-control-btn">Editar</button>
             </form>
         </div>
     </main>
