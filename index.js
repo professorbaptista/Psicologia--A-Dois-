@@ -53,7 +53,7 @@ app.use((req,res, next) => {
 app.use('/', genaralRoutes)
 
 // criando a tabela de depoimentos
-// sequelize.sync({ force: true });
+sequelize.sync({ alter: true });
 sequelize.sync();  
 
 app.listen(Port, () => {

@@ -31,6 +31,18 @@ const Usuario = sequelize.define('Usuario', {
         type: DataTypes.BOOLEAN,
         allowNull: false,
     },
+
+    fotoPerfil: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    
+    tipo: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'comum'
+    },
+
 }, { timestamps: true});
 
 module.exports = Usuario;

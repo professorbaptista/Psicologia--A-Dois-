@@ -2,7 +2,10 @@
 
 const express = require('express');
 const bcrypt = require('bcrypt');
-// const { Usuario, Agendamento, Depoimento, Comentario } = require('../models');
+const multer = require('multer');
+const path = require('path');
+
+
 
 // Importação de models.
 const Depoimento = require('../models/Depoimento');
@@ -10,6 +13,18 @@ const Agendamento = require('../models/agendamento');
 const Comentario = require('../models/comentario');
 const Usuario = require('../models/usuarios');
 
+const starage = multer.diskStorage({ destination: (req, file, cb) =>{
+    cb(null, '/public/uploads');
+},
+
+filename: (req, file, cb) => {
+    const ext = path.extname(file.orginalname);
+    const nameArquivo = `foto_${Date.now()}${ext}`;
+    cb(null, nameArquivo)
+}
+});
+
+const upload = multer({ starage });
 
 
 const router = express.Router();
@@ -37,6 +52,8 @@ function isAdmin (req, res, next){
 
     res.redirect('/login')
 }
+
+// Rota do foto de Perfil.
 
 // Rota do adminstrador
 router.get('/admin', async (req, res ) => {
@@ -344,7 +361,7 @@ router.post('/agendarConsulta', async (req, res) => {
 });
 
 // Rota agendamento Exibe a lista das agendas
-router.get('/agendamento', async (req, res) => {
+router.get('/agendamento', isAuthenticated, async (req, res) => {
 
     // Aplicando filtro de agendamentos.
     const { name, tipo_servicos } = req.query;

@@ -6,54 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= titulo %></title>
      <link rel="stylesheet" href="/css/style.css">
+     <link rel="stylesheet" href="/css/style.css">
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
     <%- include('partials/header', { title: 'Login'}) %>
     <main class="main-container">
         <div class="container">
             <h2><%= titulo %></h2>
+            <!-- Container dos cards -->
             <div class="dashboard-cards">
                 <div class="cards">
+                    <div class="icon"><i data-lucide="users"></i></div>
                     <h3><%= totalUsuarios %></h3>
                     <p>Usuários</p>
                 </div>
                 <div class="cards">
+                    <div class="icon"><i data-lucide="calendar-check"></i></div>
                     <h3><%= totalAgendamentos %></h3>
                     <p>Agendamentos</p>
                 </div>
                 <div class="cards">
+                    <div class="icon"><i data-lucide="message-square"></i></div>
                     <h3><%= totalDepoimentos %></h3>
                     <p>Depoimentos</p>
                 </div>
                 <div class="cards">
+                    <div class="icon"><i data-lucide="message-circle"></i></div>
                     <h3><%= totalComentarios %></h3>
                     <p>comentarios</p>
                 </div>
-            </div>
-            <div class="ultimo-depoi">
-                <div class="ulti-depoi-cards">
-                    
-                </div>
-            </div>
-            <h3>Últimos Depoimentos</h3>
-            <div class="ulti-depoimento">
-            <ul>
+
+                <!-- Últimos Depoimentos -->
+                
+                 <div class="ulti-depoimento">
+                    <h3>Últimos Depoimentos</h3>
+                    <ul>
                 <% ultimosDepoimentos.forEach(dep => { %>
                 <div class="ulti-depoi">
+                    <li>Depoimento de: </li><br>
                 <li><strong><%=dep.name %></strong></li>
                 <li><%= dep.message %></li>
                 </div>
 
                 <% }) %>
-            </ul>
-            </div>
-            <h3>Últimos Agendamentos</h3>
-            <div class="ulti-agenda">
-            <ul>
+                    </ul>
+                </div>
+
+            
+
+             <div class="ulti-agenda">
+                <h3>Últimos Agendamentos</h3>
+                    <ul>
                 <%  ultimosAgendamentos.forEach(ag => { %>
 
                     <div class="ulti-ag-cards">
+                        <li>Agendamento de:</li> <br>
                         <li><strong><%= ag.name %></strong> - <%= ag.data %> às <%= ag.hora %>  <%= ag.tipo_sevicos %></li>
                         <a href="/usuarios" class="btn">Gerenciar Usuários</a>
                         <a href="/depoi" class="btn">Ver Depoimentos</a>
@@ -63,10 +72,21 @@
             </ul>
             </div>
 
+            </div>
+            <div class="ultimo-depoi">
+                <div class="ulti-depoi-cards">
+                    
+                </div>
+            </div>
+            
+            
+           
+            
+
             <!-- Estatisticas do site -->
-             h
             
         </div>
+        <script>lucide.createIcons</script>
     </main>
     <%- include('partials/footer', { title: 'Login'}) %>
 </body>
