@@ -1,0 +1,25 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= titulo %></title>
+</head>
+<body>
+    <%- include('partials/header', { title: 'Painel do usuario'}) %>
+    <main class="main-container">
+        <div class="container">
+          
+            <h2><%= titulo %></h2>
+            <h3>Atualizar foto de perfil</h3>
+            <form action="/upload-foto" method="POST" enctype="multipart/form-data">
+                <input type="file" name="foto" required>
+                <button type="submit">Carregar foto</button>
+
+            </form>
+        </div>
+    </main>
+    <%- include('partials/footer', { title: 'Painel do usuario'}) %>
+</body>
+</html>

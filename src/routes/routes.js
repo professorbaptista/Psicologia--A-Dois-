@@ -46,9 +46,11 @@ function isAuthenticated( req, res, next ){
 
 // Middleware de administrador.
 function isAdmin (req, res, next){
-    if (req.session.usuario && req.session.isAdmin) {
+    if (req.session.usuario && req.session === 'admin') {
         return next();
     }
+
+    req.flash('error_msg', 'Acesso permitido apenas para administradores.')
 
     res.redirect('/login')
 }
@@ -56,7 +58,7 @@ function isAdmin (req, res, next){
 // Rota do foto de Perfil.
 
 // Rota do adminstrador
-router.get('/admin', async (req, res ) => {
+router.get('/admin',  async (req, res ) => {
 
     // Contagem de total de usuarios, agendamentos, depoimentos e comentarios.
     const totalUsuarios = await Usuario.count();
@@ -88,6 +90,42 @@ router.get('/admin', async (req, res ) => {
     })
 }) 
 
+// Rota GET da foto de perfil do usuario
+router.get('/perfilUsuario', (req, res) => {
+
+    res.render('perfilUsuario', { titulo: 'Painel do usuário'})
+})
+// Rota post de foto de perfil.
+router.post('/upload-foto', upload.single('foto'), async (req, res) => {
+    const usuarioId = req.session.usuario?.id; 
+
+    if (!usuarioId) {
+        req.flash('error_msg', 'Sessão expirada ou usuário não autenticado.');
+        return res.redirect('/perfilUsuario');
+    }
+
+    const usuario = await Usuario.findByPk(usuarioId);
+    if (!usuario) {
+        req.flash('error_msg', 'Usuário não encontrado.');
+        return res.redirect('/perfilUsuario');
+    }
+
+    if (!req.file) {
+        req.flash('error_msg', 'Nenhuma foto enviada.');
+        return res.redirect('/perfilUsuario');
+    }
+
+    usuario.fotoPerfil = `/uploads/${req.file.filename}`;
+    await usuario.save();
+
+    // Atualize a sessão (confirme se é mesmo 'usuario' e não 'usua')
+    req.session.usuario.fotoPerfil = usuario.fotoPerfil;
+
+    req.flash('success_msg', 'Foto atualizada com sucesso!');
+    res.redirect('/perfilUsuario');
+});
+
+
 // Rota de registrar usuario
 router.get('/cadastrar', async (req, res) => {
 
@@ -98,7 +136,7 @@ router.get('/cadastrar', async (req, res) => {
 });
 
 // Rota de usuarios cadstrados
-router.get('/usuarios', isAuthenticated, async ( req, res ) => {
+router.get('/usuarios',  async ( req, res ) => {
 
     const usuarios = await Usuario.findAll();
 
@@ -112,9 +150,16 @@ router.post('/cadastrarUsuario', async ( req, res ) => {
     const isAdmin = req.query;
     const hash = await bcrypt.hash(password, 10); // criptografa a senha.
 
-    await Usuario.create({ name, email, password: hash, isAdmin })
-    
-    res.redirect('/login')
+    await Usuario.create({ name, email, password: hash, isAdmin });
+
+   
+    // Apos o cadastro e login 
+    if (Usuario.tipo === 'admin') { 
+        res.redirect('/admin')
+    } else {
+        res.redirect('/perfilUsuario')
+    }
+    // res.redirect('/login')
 });
 
 router.get('/editarUsuario/:id', isAuthenticated, async (req, res ) => {
