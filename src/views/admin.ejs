@@ -11,10 +11,12 @@
      <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <%- include('partials/header', { title: 'Login'}) %>
+   <header>
+        <h4 style="text-align: right; margin-right: 40px;"><span style="color: rgb(56, 56, 236);">Online</span>, <%= usuario.name %></h4>
+    </header>
     <main class="main-container">
         <div class="container">
-            <h2><%= titulo %></h2>
+            <h2> Seja bem-vindo Administrador <%= usuario.name %></h2>
             <!-- Container dos cards -->
             <div class="dashboard-cards">
                 <div class="cards">
@@ -78,11 +80,6 @@
                     
                 </div>
             </div>
-            
-            
-           
-            
-
             <!-- Estatisticas do site -->
             
         </div>

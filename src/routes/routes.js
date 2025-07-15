@@ -46,7 +46,7 @@ function isAuthenticated( req, res, next ){
 
 // Middleware de administrador.
 function isAdmin (req, res, next){
-    if (req.session.usuario && req.session === 'admin') {
+    if (req.session.usuario && req.session.usuario.tipo === 'admin') {
         return next();
     }
 
@@ -55,10 +55,21 @@ function isAdmin (req, res, next){
     res.redirect('/login')
 }
 
+// Middleware para pacientes
+function isPaciente (req, res, next){
+    if (req.session.usuario && req.session.usuario.tipo === 'paciente') {
+        return next();
+    }
+
+    req.flash('error_msg', 'Acesso permitido apenas para pacientes.')
+
+    res.redirect('/login')
+}
+
 // Rota do foto de Perfil.
 
 // Rota do adminstrador
-router.get('/admin',  async (req, res ) => {
+router.get('/admin', isAuthenticated, isAdmin, async (req, res ) => {
 
     // Contagem de total de usuarios, agendamentos, depoimentos e comentarios.
     const totalUsuarios = await Usuario.count();
@@ -91,20 +102,37 @@ router.get('/admin',  async (req, res ) => {
 }) 
 
 // Rota GET da foto de perfil do usuario
-router.get('/perfilUsuario', (req, res) => {
 
-    res.render('perfilUsuario', { titulo: 'Painel do usuário'})
-})
+router.get('/perfilUsuario', isAuthenticated, isPaciente, async(req, res) => {
+    const usuario = req.session.usuario;
+    const agendamentos = await Agendamento.findAll({
+        where: { usuarioId: req.session.usuario.id}
+
+    }) || [];
+    // console.log('Agendamentos: ', agendamentos)
+
+    if (!usuario) {
+        req.flash('error_msg', 'Sessão expirada. Faça login novamente.');
+        return res.redirect('/login');
+    }
+
+    res.render('perfilUsuario', { 
+        usuario, 
+        agendamentos,
+        titulo: 'Painel do usuário'
+    });
+});
+
 // Rota post de foto de perfil.
-router.post('/upload-foto', upload.single('foto'), async (req, res) => {
+router.post('/upload-foto/:id', upload.single('foto'), async (req, res) => {
     const usuarioId = req.session.usuario?.id; 
 
     if (!usuarioId) {
         req.flash('error_msg', 'Sessão expirada ou usuário não autenticado.');
         return res.redirect('/perfilUsuario');
-    }
+    }      
 
-    const usuario = await Usuario.findByPk(usuarioId);
+    const usuario = await Usuario.findByPk(usuarioId); 
     if (!usuario) {
         req.flash('error_msg', 'Usuário não encontrado.');
         return res.redirect('/perfilUsuario');
@@ -126,9 +154,9 @@ router.post('/upload-foto', upload.single('foto'), async (req, res) => {
 });
 
 
-// Rota de registrar usuario
+// Rota de cadastrar usuario.
 router.get('/cadastrar', async (req, res) => {
-
+ 
    const id = req.params.id;
     const usuarios = Usuario.findByPk(id)
 
@@ -144,23 +172,59 @@ router.get('/usuarios',  async ( req, res ) => {
 }) 
 
 // Rota post para cadastrar usuario.
-router.post('/cadastrarUsuario', async ( req, res ) => {
-    
-    const { name, email, password } = req.body;
-    const isAdmin = req.query;
-    const hash = await bcrypt.hash(password, 10); // criptografa a senha.
+router.post('/cadastrarUsuario', async (req, res) => {
+    const { name, email, password, tipo, isAdmin } = req.body;
 
-    await Usuario.create({ name, email, password: hash, isAdmin });
+    try {
+        const hash = await bcrypt.hash(password, 10);
 
-   
-    // Apos o cadastro e login 
-    if (Usuario.tipo === 'admin') { 
-        res.redirect('/admin')
-    } else {
-        res.redirect('/perfilUsuario')
+        if (!name || !email || !password) {
+            req.flash('error_msg', 'Todos os campos são obrigatorios.');
+            return res.redirect('/cadastrar')
+        }
+
+        const usuarioExistente = await Usuario.findOne({ where: { email }})
+
+        if (usuarioExistente) {
+            req.flash('error_msg', 'Este email já existe.')
+        }
+        const novoUsuario = await Usuario.create({
+            name,
+            email,
+            password: hash,
+            tipo,
+            isAdmin: tipo === 'admin' // define isAdmin com base no tipo,
+
+        });
+
+        // (opcional) salvar o usuário logado na sessão
+        // req.session.usuario = novoUsuario;
+
+           req.session.usuario = {
+            id: novoUsuario.id,
+            name: novoUsuario.name,
+            email: novoUsuario.email,
+            tipo: novoUsuario.tipo,
+            fotoPerfil: novoUsuario.fotoPerfil // se tiver
+        };
+
+        // redireciona de acordo com o tipo
+        if (novoUsuario.tipo === 'admin') {
+            res.redirect('/admin');
+        } else if (novoUsuario.tipo === 'paciente') {
+            res.redirect('/perfilUsuario');
+        } else {
+            req.flash('error_msg', 'Tipo de usuário inválido.');
+            res.redirect('/login');
+        }
+
+    } catch (err) {
+        console.log('ERRO DO CADASTRO DE PACIENTE: ',err);
+        req.flash('error_msg', 'Erro ao cadastrar usuário.');
+        res.redirect('/cadastrar'); // ou onde for seu formulário
     }
-    // res.redirect('/login')
 });
+
 
 router.get('/editarUsuario/:id', isAuthenticated, async (req, res ) => {
 
@@ -201,7 +265,9 @@ router.get('/login', async (req, res) => {
 });
 
 // Rota post de login.
+
 router.post('/login', async (req, res) => {
+
   const { email, password } = req.body;
 
   try {
@@ -223,20 +289,84 @@ router.post('/login', async (req, res) => {
 
     // Usuário autenticado com sucesso
     req.session.usuario = {
-      id: usuario.id,
-      name: usuario.name,
-      isAdmin: usuario.isAdmin 
-    };
+    id: usuario.id,
+    name: usuario.name,
+    email: usuario.email,
+    tipo: usuario.tipo,
+    isAdmin: usuario.isAdmin,
+    comum: usuario.comum, 
+};
+    // req.session.usuario = {
+    //   id: usuario.id,
+    //   name: usuario.name,
+    //   isAdmin: usuario.isAdmin,
+    //   comum: usuario.comum 
+    // }; 
+
+    console.log('Tipo usuario: ', usuario.tipo)
+    if (usuario.tipo === 'admin') {
+        return res.redirect('/admin')
+    } else if (usuario.tipo === 'paciente') {
+        return res.redirect('/perfilUsuario')
+    } else {
+        res.flash('error_msg', 'Tipo de usuário não definido!')
+    }
 
     req.flash('success_msg', 'Login realizado com sucesso!');
-    return res.redirect('/admin');
+    // return res.redirect('/admin');
     
   } catch (error) {
-    console.error('Erro ao fazer login:', error);
+    console.log('Erro ao fazer login:', error);
     req.flash('error_msg', 'Erro interno no servidor');
     return res.redirect('/login');
   }
 });
+// router.post('/login', async (req, res) => {
+
+//   const { email, password } = req.body;
+
+//   try {
+//     const usuario = await Usuario.findOne({ where: { email }});
+//     console.log('Email recebido: ', email);
+
+//     if (!usuario) {
+//       req.flash('error_msg', 'Usuário não encontrado...');
+//       return res.redirect('/login'); // <-- importante
+//     }
+
+//     const senhaValida = await bcrypt.compare(password, usuario.password);
+//     console.log('Senha válida: ', senhaValida);
+
+//     if (!senhaValida) {
+//       req.flash('error_msg', 'Senha inválida...');
+//       return res.redirect('/login'); // <-- importante
+//     }
+
+//     // Usuário autenticado com sucesso
+//     req.session.usuario = {
+//       id: usuario.id,
+//       name: usuario.name,
+//       isAdmin: usuario.isAdmin,
+//       comum: usuario.comum 
+//     };
+
+//     if (usuario.tipo === 'admin') {
+//         return res.redirect('/admin')
+//     } else if (usuario.tipo === 'paciente') {
+//         return res.redirect('/perfilUsuario')
+//     } else {
+//         return res.flash('error_msg', 'Tipo de usuário não definido!')
+//     }
+
+//     req.flash('success_msg', 'Login realizado com sucesso!');
+//     // return res.redirect('/admin');
+    
+//   } catch (error) {
+//     console.log('Erro ao fazer login:', error);
+//     req.flash('error_msg', 'Erro interno no servidor');
+//     return res.redirect('/login');
+//   }
+// });
 
 // Logout de sessão
 router.get('/logout', async (req, res) => {

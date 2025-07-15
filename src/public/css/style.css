@@ -42,7 +42,7 @@ body{
 
 
 /*Flash massages*/
-.msg{
+/* .msg{
     padding: 10px;
     margin-bottom: 15px;
     border-radius: 6px;
@@ -50,18 +50,26 @@ body{
     margin: 0 auto;
     width: 60%;
     background-color: #dff0d8;
-}
+} */
 
 .success{
    
     color: #3c763d;
     text-align: center;
+    margin-left: 200px;
+    padding: 20px;
+   
+    width: 400px;
 
 }
 
 .error{
-    background-color: #f2dede;
+   
     color: #a94442;
+    text-align: center;
+    margin-left: 300px;
+    padding: 20px;
+    width: 400px;
 }
 
 /* Header*/

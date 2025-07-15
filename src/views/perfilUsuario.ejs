@@ -4,20 +4,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= titulo %></title>
+    <title>Perfil de <%= usuario.name %></title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <%- include('partials/header', { title: 'Painel do usuario'}) %>
+    <header>
+        <h4 style="text-align: right; margin-right: 40px;"><span style="color: #009;">Online</span>, <%= usuario.name %></h4>
+        <!-- <h4 style="text-align: right; margin-right: 40px;"><span style="color: #009;">Online</span>, <%= usuario.name %></h4> -->
+    </header>
     <main class="main-container">
         <div class="container">
+
+            <% if (usuario) { %>
+    <h3>Seja bem-vindo <%= usuario.name %></h3>
+    <% if(usuario.fotoPerfil) { %>
+        <img src="<%= usuario.fotoPerfil %>" ...>
+    <% } else { %>
+        <h3>Nenhuma foto de perfil</h3>
+    <% } %>
+
+    <% if(usuario.tipo === 'paciente') { %>
+        <h3>Seus agendamentos</h3>
+        <% if(agendamentos && agendamentos.length > 0) { %>
+            <ul>
+                <% agendamentos.forEach(a => { %>
+                    <li><%= a.data %> - <%= a.tipo_servicos %></li>
+                <% }) %>
+            </ul>
+        <% } else { %>
+            <p>Nenhum agendamento encontrado.</p>
+        <% } %>
+    <% } else if(usuario.tipo === 'admin') { %>
+        <h2>Você é Administrador</h2>
+        <a href="/admin">Ir para o painel de Administração</a>
+    <% } %>
+
+    <p><strong>Email: </strong><%= usuario.email %></p>
+    <p><strong>Tipo: </strong><%= usuario.tipo %></p>
+
+    <form action="/upload-foto/<%= usuario.fotoPerfil %>" method="POST" enctype="multipart/form-data" required>
+        <input type="file" name="foto" required>
+        <button type="submit">Carregar foto</button>
+    </form>
+<% } else { %>
+    <p>Erro: Usuário não encontrado na sessão.</p>
+<% } %>
+
           
-            <h2><%= titulo %></h2>
-            <h3>Atualizar foto de perfil</h3>
-            <form action="/upload-foto" method="POST" enctype="multipart/form-data">
+            <!-- Foto de perfil e mensagem de boas vindas -->
+            <!-- <div class="foto-perfil">
+                <h3>Seja bem-vindo <%= usuario.name %></h3>
+                <% if(usuario.fotoPerfil) { %>
+                    <img src="<%=usuario.fotoPerfil %>" alt="Foto de Perfil" width="100px" height="100px" style="border-radius: 50%;">
+                <% } else { %>
+            </div>
+                <h3>Nenhuma foto de perfil</h3>
+            <% } %>
+            <% if(error_msg) { %>
+               <h3><%= error_msg %></h3>
+            <% } %>
+            <% if(usuario.tipo === 'paciente') { %>
+                <h3>Seus agendamentos</h3>
+                <% if(agendamentos.length > 0) { %>
+
+                    <ul>
+                        <% agendamentos.forEach(a => { %>
+                            <li><%= a.data %> - <%= a.tipo_servicos %></li>
+
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+
+                    <p>Nenhum agendamento encontrado.</p>
+                <% } %>
+              
+            <% } else if(usuario.tipo === 'admin') { %>
+
+                <h2>Você é Administrador</h2>
+                <a href="/admin">Ir para o painel de Administração</a>
+            <% } %>
+
+            <p><strong>Email: </strong><%= usuario.email %></p>
+            <p><strong>Tipo: </strong><%= usuario.tipo %></p>
+
+            <a href="/">Voltar à pagina inicial</a>
+            
+            <form action="/upload-foto/<%= usuario.fotoPerfil %>" method="POST" enctype="multipart/form-data">
                 <input type="file" name="foto" required>
                 <button type="submit">Carregar foto</button>
 
-            </form>
+            </form> -->
         </div>
     </main>
     <%- include('partials/footer', { title: 'Painel do usuario'}) %>

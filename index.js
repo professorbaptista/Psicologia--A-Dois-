@@ -53,8 +53,8 @@ app.use((req,res, next) => {
 app.use('/', genaralRoutes)
 
 // criando a tabela de depoimentos
-sequelize.sync({ force: true });
-// sequelize.sync();  
+// sequelize.sync({ force: true });
+sequelize.sync();  
 
 app.listen(Port, () => {
     console.log(`Site do projecto Psicologico rodando na porta ${Port}.`)

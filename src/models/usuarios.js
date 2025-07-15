@@ -40,7 +40,7 @@ const Usuario = sequelize.define('Usuario', {
     tipo: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: 'comum'
+        defaultValue: 'paciente'
     },
 
 }, { timestamps: true});

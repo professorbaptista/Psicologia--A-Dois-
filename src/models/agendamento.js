@@ -1,6 +1,7 @@
 
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const Usuario = require('./usuarios');
 
 const Agendamento = sequelize.define('Agendamento', {
   id: {
@@ -36,7 +37,10 @@ const Agendamento = sequelize.define('Agendamento', {
   }
 }, {
   timestamps: true,
-  tableName: 'agendamentos'
+  tableName: 'agendamento'
 });
+
+Usuario.hasMany(Agendamento, { foreignKey: 'usuarioId'});
+Agendamento.belongsTo(Usuario, { foreignKey: 'usuarioId'});
 
 module.exports = Agendamento;

@@ -11,6 +11,15 @@
     <main class="main-container">
         <div class="container"> 
             <h2><%= titulo %></h2>
+            <% if(error_msg) { %>
+                <div class="error">
+                    <p><%= error_msg %></p>
+                </div>
+            <% } else { %>
+                <div class="success">
+                    <p><%= success_msg %></p>
+                </div>
+            <% } %>
             <form action="/cadastrarUsuario" method="POST" class="form-control">
                 <label for="name">Nome</label>
                 <input type="text" name="name" placeholder="Digite o seu nome..."
@@ -21,6 +30,11 @@
                 <label for="password">Senha</label>
                 <input type="password" name="password" placeholder="Digite a sua senha..."
                 requered>
+                <select name="tipo" required>
+                    <option value="Escolhe uma opção">Escolhe uma opção</option>
+                    <option value="paciente">Paciente</option>
+                    <option value="admin">Administrador</option>   
+                </select>
                 <button type="submit" class="form-control-btn">Cadastrar</button>
             </form>
         </div>

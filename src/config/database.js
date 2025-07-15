@@ -9,5 +9,5 @@ const sequelize = new Sequelize({
     storage: path.join(__dirname, '../database.sqlite'),
    logging: false,
 });
-
+ 
 module.exports = sequelize;
